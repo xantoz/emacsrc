@@ -1,0 +1,973 @@
+(require 'cl)                           ; I like extra bloat!
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+
+  (setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
+                           ("gnu" . "http://elpa.gnu.org/packages/")
+                           ("marmalade" . "http://marmalade-repo.org/packages/")
+                           ("melpa" . "https://stable.melpa.org/packages/")))
+  (package-initialize)
+  (when (not package-archive-contents)
+    (package-refresh-contents)))
+
+;; (autoload 'ghc-init "ghc" nil t)
+;; (autoload 'ghc-debug "ghc" nil t)
+;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
+
+;(setq max-specpdl-size 13000)           ; 10 times larger than default (1300)
+(setq max-specpdl-size 30000)
+;(setq max-lisp-eval-depth 10000)        ; 16.7 times larger than default (600)
+(setq max-lisp-eval-depth 20000)
+
+(unless (fboundp 'system-name)
+  (defun system-name ()
+    system-name))
+
+;; Constants to tell which machine we are running on so we can conditionally include code and stuffs
+(defconst i-am-csc-ubuntu (and (eq system-type 'gnu/linux) (string= "csc" (second (split-string (system-name) "\\.")))))
+(defconst i-am-monad (string-prefix-p "monad" (system-name)))
+(defconst i-am-lain (string-prefix-p "lain" (system-name)))
+(defconst i-am-sakuya (string-prefix-p "sakuya" (system-name)))
+(defconst i-am-colgate (string-prefix-p "colgate" (system-name)))
+(defconst i-am-udongein (string-prefix-p "udongein" (system-name)))
+(defconst i-am-suiseiseki (string-prefix-p "suiseiseki.nu" (system-name)))
+(defconst i-am-souseiseki (string-prefix-p "Souseiseki" (system-name)))
+(defconst i-am-patchouli  (string-prefix-p "patchouli" (system-name)))
+(defconst i-am-kombu      (string-prefix-p "kombu" (system-name)))
+(defconst i-am-antons-deb (string-prefix-p "antons-deb" (system-name)))
+(defconst i-am-ekinant-debian (string= (system-name) "ekinant-debian"))
+(defconst i-am-elx (string= (substring (system-name) 0 3) "elx"))
+
+(defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
+(defconst i-have-battery (or i-am-colgate i-am-antons-deb))
+
+
+;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
+
+(if (featurep 'tex-site) (unload-feature 'tex-site t))
+
+
+;; Have some nice extra dired features like dired-do-find-marked-files (on F)
+;; also keybinds
+(defun my-dired-copy-filename-as-kill (&optional arg)
+  (interactive "P")
+  (if arg
+      (if (zerop (prefix-numeric-value arg))
+          (dired-copy-filename-as-kill)
+          (dired-copy-filename-as-kill arg))
+      (dired-copy-filename-as-kill 0)))
+
+(add-hook 'dired-load-hook
+          #'(lambda ()
+              (load "dired-x")
+              (setq dired-guess-shell-alist-user '(("\\.eps\\'" "atril &") ("\\.pdf\\'" "atril &") ("\\.csv\\'" "csv-pretty") ("\\.csv.gz\\'" "zcat * | csv-pretty")))))
+(add-hook 'dired-mode-hook
+          #'(lambda ()
+              (local-set-key "w" 'my-dired-copy-filename-as-kill)))
+
+
+;; Add extra things to load path if they exist (mostly obsolete now
+;; with packages, but I still have some modules installed this way on
+;; some machines)
+(defun maybe-add-to-load-path (&rest paths)
+  (dolist (ele paths)
+    (when (file-directory-p ele)
+      (add-to-list 'load-path ele))))
+
+(maybe-add-to-load-path
+ "~/.elisp/"
+ "~/.elisp/emms/lisp/"
+ "~/.elisp/haskell-mode-2.8.0/"
+ "~/.elisp/rudel-0.2-4/"
+ "~/.elisp/rudel-0.2-4/obby/"
+ "~/.elisp/rudel-0.2-4/jupiter/"
+ "~/.elisp/nyan-mode/"
+ "~/.elisp/jdee/lisp/"
+ "~/.elisp/cedet-1.0/cogre/"
+ "~/.elisp/cedet-1.0/common/"
+ "~/.elisp/cedet-1.0/contrib/"
+ "~/.elisp/cedet-1.0/ede/"
+ "~/.elisp/cedet-1.0/eieio/"
+ "~/.elisp/cedet-1.0/semantic/"
+ "~/.elisp/cedet-1.0/speedbar/"
+ "~/.elisp/cedet-1.0/srecode/"
+ "~/.elisp/cedet-1.0/tests/"
+ "~/.elisp/google-maps/")
+
+;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
+;; (require 'jflex-mode nil t)
+;; same goes for rainbow-mode
+(require 'rainbow-mode nil t)
+
+;; ;; Pulsing on goto-line among others
+;; (when (require 'pulse nil t)
+;;   (pulse-toggle-integration-advice 1))
+
+
+
+;; (when (file-directory-p "~/.elisp/")
+;;   (add-to-list 'load-path "~/.elisp/")) ; Add stuff to load-path
+;; (when (file-directory-p "~/.elisp/emms/lisp/")
+;;   (add-to-list 'load-path "~/.elisp/emms/lisp/"))
+;; (when (file-directory-p "~/.elisp/haskell-mode-2.8.0/")
+;;   (add-to-list 'load-path "~/.elisp/haskell-mode-2.8.0/"))
+
+(setq inhibit-startup-screen t)
+
+
+;; (menu-bar-mode -1)
+(when (featurep 'x)
+  (tool-bar-mode -1)
+  ;; (scroll-bar-mode -1)
+  )
+
+
+(require 'ag nil t)
+
+;; Mute these
+(dolist (i '(XF86AudioMute
+             XF86MonBrightnessDown
+             XF86MonBrightnessUp
+             XF86AudioRaiseVolume
+             XF86AudioLowerVolume
+             XF86WebCam
+             XF86Eject))
+  (global-set-key (make-vector 1 i) 'ignore))
+
+(when (require 'crosshairs nil t)
+  (global-set-key (kbd "<f9>") 'crosshairs-flash)
+  (global-set-key (kbd "C-<f9>") 'crosshairs-mode)
+  (setq crosshairs-vline-same-face-flag t))
+
+;; C-x C-t crashes badly with ratpoison defaults. C-x t seems to be free, so use that instead
+(global-set-key (kbd "C-x t") 'transpose-lines)
+
+;; find-file-in-project
+(global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
+
+;; pop mark
+(global-set-key (kbd "C-,") (lambda () (interactive) (set-mark-command "")))
+
+(when (require 'helm nil t)
+  (global-set-key (kbd "C-?") 'helm-semantic-or-imenu))
+
+(when (and (require 'imenu-anywhere nil t))
+  (cond ((featurep 'helm)
+         (global-set-key (kbd "C-.") 'helm-imenu-anywhere)
+         (global-set-key (kbd "C-M-.") 'imenu-anywhere))
+        (t (global-set-key (kbd "C-.") 'imenu-anywhere))))
+
+(defun fix-python-imenu ()
+  "Hack to manually set imenu-create-index-function to python-imenu-create-index"
+  (interactive)
+  (dolist (buffer (buffer-list))
+    (with-current-buffer buffer
+      (when (eq major-mode 'python-mode)
+        (set (make-local-variable 'imenu-create-index-function) 'python-imenu-create-index)))))
+
+(add-hook 'python-mode-hook
+          (lambda()
+            (setq imenu-create-index-function 'python-imenu-create-index)))
+
+;; (when (> emacs-major-version 21)
+;;   (cua-selection-mode t))
+
+(setq display-buffer-reuse-frames t)
+
+(setq require-final-newline t)		;; will make the last line end in a carriage return
+(fset 'yes-or-no-p 'y-or-n-p)		;; will allow you to type just "y" instead of "yes" when you exit.
+(setq next-line-add-newlines nil)	;; will disallow creation of new lines when you press the "arrow-down key" at end of the buffer.
+
+(setq display-time-day-and-date t) (display-time)  ;; will make the display of date and time persistent.
+(require 'paren) (show-paren-mode t)               ;; will highlight matching parentheses next to cursor.
+(setq-default indent-tabs-mode nil)                ;; will introduce spaces instead of tabs by default.
+
+;; (setq default-tab-width 4)              ;Make tab-only-indented code look sane (but code where it's mixed looks insane)
+
+
+(transient-mark-mode t)              ;; will highlight region between point and mark.
+(setq query-replace-highlight t)     ;; will highlight during query.
+(setq search-highlight t)            ;; highlight incremental search
+(setq default-major-mode 'text-mode) ;; will make text-mode default.
+
+; Moving cursor down at bottom scrolls only a single line, not half page
+(setq scroll-step 1)
+(setq scroll-conservatively 5)
+(global-set-key [delete] 'delete-char)
+
+(setq mouse-drag-copy-region nil)  ; stops selection with a mouse being immediately injected to the kill ring
+(setq x-select-enable-primary nil)  ; stops killing/yanking interacting with primary X11 selection
+;; (setq x-select-enable-primary t)  ; stops killing/yanking interacting with primary X11 selection
+(setq x-select-enable-clipboard t)  ; makes killing/yanking interact with clipboard X11 selection   ;; these will probably be already set to these values, leave them that way if so!
+
+; (setf interprogram-cut-function 'x-select-text)
+; (setf interprogram-paste-function 'x-cut-buffer-or-selection-value)
+
+; this doesn't always quite work right at time of writing, but when it does, it makes
+; "highlight/middlebutton" style (X11 primary selection based) copy-paste work as expected
+; if you're used to other modern apps (that is to say, the mere act of highlighting doesn't
+; overwrite the clipboard or alter the kill ring, but you can paste in merely highlighted
+; text with the mouse if you want to)
+(setq select-active-regions t) ;  active region sets primary X11 selection
+(global-set-key [mouse-2] 'mouse-yank-primary)  ; make mouse middle-click only paste from primary X11 selection, not clipboard and kill ring.
+
+;; with this, doing an M-y will also affect the X11 clipboard, making emacs act as a sort of clipboard history, at
+;; least of text you've pasted into it in the first place.
+; (setq yank-pop-change-selection t)  ; makes rotating the kill ring change the X11 clipboard.
+
+;;;; C-mode
+(setq kill-whole-line t)     ;; will make "Ctrl-k" kills an entire line if the cursor is at the beginning of line -- very useful.
+(setq c-hungry-delete-key t) ;; will delete "hungrily" in C mode! Use it to see what it does -- very useful.
+(setq c-auto-newline 1)      ;; will let emacs put in a "carriage-return" for you automatically after left curly braces, right curly braces, and semi-colons in "C mode"
+
+(add-hook 'c-mode-common-hook
+          #'(lambda ()
+              (turn-on-auto-fill)
+              ;; (setq fill-column 128)
+              (setq fill-column 96)
+              (setq comment-column 60)
+              ;; (modify-syntax-entry ?_ "w")       ; now '_' is not considered a word-delimiter
+              (if (or (> emacs-major-version 23) (and (= emacs-major-version 23) (>= emacs-minor-version 2))) ; For studlyCaps, use (c-subword-mode 1) in your mode setup: makes some movement and text commands recognize case-change as a word boundary
+                  (subword-mode 1)
+                  (c-subword-mode 1))
+              ;; (c-set-style "ellemtel")           ; set indentation style
+              (c-set-style "linux")           ; set indentation style
+              (setq c-doc-comment-style '(gtkdoc javadoc autodoc))
+              ;; (setq c-basic-offset (if i-am-antons-deb 2 4))
+              (setq c-basic-offset 4)
+              (local-set-key (kbd "C-c C-h") 'c-toggle-hungry-state)
+              (local-set-key [(control tab)]     ; move to next tempo mark
+                             'tempo-forward-mark)))
+
+; Make Emacs use "newline-and-indent" when you hit the Enter key so
+; that you don't need to keep using TAB to align yourself when coding.
+(global-set-key "\C-m" 'newline-and-indent)
+
+
+(when (require 'xcscope nil t)
+  (when (fboundp 'cscope-setup)         ;some versions of xcscope do not have the cscope-setup function
+    (cscope-setup))
+  (add-hook 'python-mode-hook (function cscope-minor-mode))
+  ;(add-hook 'php-mode-hook (function cscope-minor-mode))  ;; actually unneccesary since php is a c-mode derivative
+  (add-hook 'web-mode-hook (function cscope-minor-mode)))
+
+;; give helm-cscope-mode some bindings so it's actually useful
+(when (require 'helm-cscope nil t)
+  (progn
+    (let ((map helm-cscope-mode-map))
+      (define-key map "\C-css" 'helm-cscope-find-this-symbol)
+      (define-key map "\C-csd" 'helm-cscope-find-global-definition)
+      (define-key map "\C-csg" 'helm-cscope-find-global-definition)
+      ;(define-key map "\C-csG" 'cscope-find-global-definition-no-prompting)
+      (define-key map "\C-cs=" 'helm-cscope-find-assignments-to-this-symbol)
+      (define-key map "\C-csc" 'helm-cscope-find-calling-this-funtcion) ;lol, misspelled in the lib
+      (define-key map "\C-csC" 'helm-cscope-find-called-function)
+      (define-key map "\C-cst" 'helm-cscope-find-this-text-string)
+      (define-key map "\C-cse" 'helm-cscope-find-egrep-pattern)
+      (define-key map "\C-csf" 'helm-cscope-find-this-symbol)
+      (define-key map "\C-csi" 'helm-cscope-find-files-including-file)
+      ;; --- (The '---' indicates that this line corresponds to a menu separator.)
+      ;; (define-key map "\C-csb" 'cscope-display-buffer)
+      ;; (define-key map "\C-csB" 'cscope-display-buffer-toggle)
+      (define-key map "\C-csn" 'cscope-history-forward-line-current-result)
+      (define-key map "\C-csN" 'cscope-history-forward-file-current-result)
+      (define-key map "\C-csp" 'cscope-history-backward-line-current-result)
+      (define-key map "\C-csP" 'cscope-history-backward-file-current-result)
+      (define-key map "\C-csu" 'cscope-pop-mark)
+      ;; ---
+      (define-key map "\C-csa" 'cscope-set-initial-directory)
+      (define-key map "\C-csA" 'cscope-unset-initial-directory)
+      ;; ---
+      (define-key map "\C-csL" 'cscope-create-list-of-files-to-index)
+      (define-key map "\C-csI" 'cscope-index-files)
+      (define-key map "\C-csE" 'cscope-edit-list-of-files-to-index)
+      (define-key map "\C-csW" 'cscope-tell-user-about-directory)
+      (define-key map "\C-csS" 'cscope-tell-user-about-directory)
+      (define-key map "\C-csT" 'cscope-tell-user-about-directory)
+      (define-key map "\C-csD" 'cscope-dired-directory))))
+
+
+; With the below global key-bindings, it is possible to press 'f12' (you could change this to any other key you want) and automagically, a partial string gets expanded. For example, if you have typed "mylon" and press 'F12', "mylon" will get replaced by "MyLongIdentifierName" if that string exists somewhere in your set of buffers.
+;; (global-set-key [f12]         'dabbrev-expand)
+;; (define-key esc-map [f12]     'dabbrev-completion)
+
+;; fix silly emacs defaults
+(setq sentence-end-double-space nil)
+
+;;;; shell-mode Improvements
+(add-hook 'comint-output-filter-functions 'comint-watch-for-password-prompt)  ;; will disalllow passwords to be shown in clear text (this is useful, for example, if you use the shell and then, login/telnet/ftp/scp etc. to other machines).
+
+;;;; Handle backups and autosaves stuff sanelier
+(setq backup-by-copying t               ; don't clobber symlinks
+      backup-directory-alist '(("." . "~/.emacs.d/backups/")) ; don't litter my fs tree
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)       ; use versioned backups
+(setq tramp-backup-directory-alist backup-directory-alist)
+;; (setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-saves/" t)))
+
+;; auto-saves goes in same directory for extra ugliness (esp. since
+;; backups don't know). But this hinders tramp from being stupid
+;; wrt. /su::/somesupersecretfile and I want my .emacs to be sanely
+;; usable on multi-user systems on where I'm the admin.
+(setq auto-save-file-name-transforms nil)
+
+;;;; w3m settings
+(eval-after-load 'w3m
+  '(progn
+     (if (featurep 'x)
+         (setq w3m-default-display-inline-images t
+               w3m-use-favicon                   t)
+       (setq w3m-default-display-inline-images     nil
+             w3m-show-graphic-icons-in-header-line nil
+             w3m-show-graphic-icons-in-mode-line   nil
+             w3m-use-favicon                       nil))
+     (setq w3m-default-save-directory "~/Downloads"
+           w3m-use-cookies            t)))
+
+;;;; default browser
+(defun find-browser ()
+  "Finds browser to use, from an internal list. Earlier takes precedence.
+Graphical browsers only."
+  (let ((browsers (list "conkeror" "firefox" "chromium" "midori" "surf")))
+    (reduce (lambda (a b) (or a b))     ;or ain't a function, can't use it without thunk
+            (mapcar #'executable-find browsers))))
+
+(cond ((and (featurep 'x)
+            (find-browser))
+       (setq browse-url-browser-function 'browse-url-generic
+             browse-url-generic-program (find-browser)))
+      ((require 'w3m nil t)
+       (setq browse-url-browser-function 'w3m-browse-url)
+       (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)))
+
+;(windmove-default-keybindings 'meta)
+;(windmove-default-keybindings)
+
+;; Make window switching a little easier. C-x-o is a pain.
+;; Unbind C-t. I don't really care about transposing chars.
+;; FIXME: Conflicts with ratpoison
+(global-unset-key "\C-t")
+;; Turn C-t into a prefix key
+(define-prefix-command 'ctrl-t-prefix)
+;; And within C-t bind vi-style navigation shortcuts
+;; to window switching
+(define-key 'ctrl-t-prefix "j" 'windmove-down)
+(define-key 'ctrl-t-prefix "k" 'windmove-up)
+(define-key 'ctrl-t-prefix "h" 'windmove-left)
+(define-key 'ctrl-t-prefix "l" 'windmove-right)
+(global-set-key "\C-t" 'ctrl-t-prefix)
+
+
+;;;; etags customization
+;; swap these two buttons, I want this to behave like SLIME does
+(define-key esc-map "*" 'tags-loop-continue)
+(define-key esc-map "," 'pop-tag-mark)
+
+;;;; Making C-x k end an emacsclient session
+(when (>= emacs-major-version 23)
+  (add-hook 'server-switch-hook
+            (lambda ()
+              (when (current-local-map)
+                (use-local-map (copy-keymap (current-local-map))))
+              (local-set-key (kbd "C-x k") 'server-edit))))
+
+;;;; Start the emacs server. not needed /etc/init.d/emacs makes sure the server starts
+;; (server-start)
+
+
+;; (when (or (require 'slime nil t) (load "~/quicklisp/slime-helper.el" t))
+;;   (slime-setup)
+;;   (when (string= (system-name) "lain.local")
+;;     (setq inferior-lisp-program "clisp -K full")))
+
+;; ;;;; SLIME
+;; (set-language-environment "UTF-8")
+;; (setq slime-net-coding-system 'utf-8-unix)
+
+;; (setq inferior-lisp-program (or (executable-find "sbcl")
+;;                                 (executable-find "clisp"))) ; your Lisp system
+
+
+;; (when (require 'slime nil t)
+;;   (setup-slime)
+;;   (setq inferior-lisp-program (or (executable-find "sbcl")
+;;                                   (executable-find "clisp")))) ; your Lisp system
+
+(when (load (expand-file-name "~/quicklisp/slime-helper.el") t)
+  (setq inferior-lisp-program "sbcl"))
+
+
+;; (defun slem ()
+;;   (interactive)
+;;   ;; (fmakunbound 'slime)
+;;   (load (expand-file-name "~/quicklisp/slime-helper.el"))
+;;   (set-language-environment "UTF-8")
+;;   (setq slime-net-coding-system 'utf-8-unix)
+;;   (setq inferior-lisp-program (or (executable-find "sbcl")
+;;                                   (executable-find "clisp"))) ; clisp -K full ?
+;;   (slime-setup)
+;;   (slime))
+
+
+;; Mouse Drag
+;; (global-set-key [down-mouse-2] 'mouse-drag-throw)
+(global-set-key [down-mouse-2] 'mouse-drag-drag)
+(setq mouse-throw-with-scroll-bar t)
+
+(when (require 'fill-column-indicator nil t)
+  ;; (setq fci-rule-character 9553)        ;double bar
+  (setq fci-rule-character 9474)        ;single bar
+  )
+
+;;EMMS setup
+(when (require 'emms nil t)
+  (require 'emms-setup)
+  (emms-standard)
+  (emms-default-players)
+
+  ;; (require 'emms-player-simple)
+  ;; (define-emms-simple-player apeplayer '(file)
+  ;;   (regexp-opt '( ".ape" ".tta" ))
+  ;;   "mplayer" "-slave" "-quiet" "-really-quiet" )
+  ;; (add-to-list 'emms-player-list 'emms-player-apeplayer)
+
+  (require 'emms-info-libtag)
+  (setq emms-info-functions '(emms-info-libtag))
+
+  ;;Play a whole directory tree
+  (global-set-key (kbd "C-c C-l") 'emms-play-directory-tree)
+  ;;Just play a single file
+  (global-set-key (kbd "C-c l") 'emms-play-file)
+
+  ;;Set a pause key
+  (global-set-key (kbd "C-c p") 'emms-pause)
+
+  ;;Set a key for previous track
+  (global-set-key (kbd "C-c C-p") 'emms-previous)
+
+  ;;Set a key to browse the music
+  (global-set-key (kbd "C-c b") 'open-music-dir-in-dired)
+
+  ;;And a key to add the music while browsing
+  (global-set-key (kbd "C-c q") 'emms-add-dired)
+
+  ;;Set a next key
+  (global-set-key (kbd "C-c n") 'emms-next)
+
+  ;;Add a whole tree to the playlist
+  (global-set-key (kbd "C-c C-a") 'emms-add-directory-tree)
+  ;;Add a single file
+  (global-set-key (kbd "C-c a") 'emms-add-file)
+
+  ;;Show the playlist in the current frame
+  (global-set-key (kbd "C-c C-s") 'emms-playlist-mode-go)
+
+  ;; lite mer regexp at lilla mplayer
+  (emms-player-set emms-player-mplayer 'regex "\\`\\(http\\|mms\\)://\\|\\.\\([Oo][Gg][Gg]\\|[Mm][Pp]3\\|[Ww][Aa][Vv]\\|[Mm][Pp][Gg]\\|[Mm][Pp][Ee][Gg]\\|[Ww][Mm][Vv]\\|[Ww][Mm][Aa]\\|[Mm][Oo][Vv]\\|[Aa][Vv][Ii]\\|[Dd][Ii][Vv][Xx]\\|[Oo][Gg][Mm]\\|[Oo][Gg][Vv]\\|[Aa][Ss][Ff]\\|[Mm][Kk][Vv]\\|[Rr][Mm]\\|[Rr][Mm][Vv][Bb]\\|[Mm][Pp]4\\|[Ff][Ll][Aa][Cc]\\|[Vv][Oo][Bb]\\|[Mm]4[Aa]\\|[Aa][Pp][Ee]\\|[Tt][Tt][Aa]\\|[Aa][Aa][Cc]\\)\\'"))
+
+
+;;;; SlickCopy
+;; (defadvice kill-ring-save (before slick-copy activate compile)
+;;   "When called interactively with no active region, copy a single line instead."
+;;   (interactive
+;;    (if mark-active (list (region-beginning) (region-end))
+;;      (message "Copied line")
+;;      (list (line-beginning-position)
+;;            (line-beginning-position 2)))))
+
+;; (defadvice kill-region (before slick-cut activate compile)
+;;   "When called interactively with no active region, kill a single line instead."
+;;   (interactive1;1704;0c
+;;    (if mark-active (list (region-beginning) (region-end))
+;;      (list (line-beginning-position)
+;;            (line-beginning-position 2)))))
+
+
+;;;; Find function
+(find-function-setup-keys)
+
+;;;; iswitchb-mode
+(iswitchb-mode 1)
+(setq iswitchb-default-method
+      (if i-am-headless-server
+          'always-frame
+          'samewindow))
+
+;;;; image-dired
+(when (featurep 'x)
+  (eval-after-load 'image-dired
+    '(let ((use-/dev/shm/-? (or i-am-udongein i-am-lain i-am-monad)))
+       (setq image-dired-cmd-pngcrush-program         (executable-find "pngcrush")
+             image-dired-cmd-pngnq-program            (executable-find "pngnq")
+             image-dired-gallery-image-root-url       "Pictures"
+             image-dired-gallery-thumb-image-root-url "thumbnails"
+             image-dired-external-viewer              (cond ((executable-find "feh-bg")
+                                                             (concat (executable-find "feh-bg") " --scale-down"))
+                                                            ((executable-find "feh"))
+                                                            ((executable-find "display")))
+             image-dired-main-image-directory         "~/Pictures/"
+             image-dired-temp-image-file              (cond (use-/dev/shm/-? "/dev/shm/image-dired_temp")
+                                                            (t               "/tmp/image-dired_temp"))
+             image-dired-temp-rotate-image-file       (cond (use-/dev/shm/-? "/dev/shm/image-dired_temp_rotate")
+                                                            (t               "/tmp/image-dired_temp_rotate"))
+             image-dired-thumbnail-storage            'standard)
+       ;; Make dired use image-dired-dired-next-line and image-dired-dired-previous-line for extra niceness
+       (add-hook 'dired-mode-hook
+                 (lambda ()
+                   (local-set-key "n"    'image-dired-dired-next-line)
+                   (local-set-key "p"    'image-dired-dired-previous-line)
+                   (local-set-key " "    'image-dired-dired-next-line)
+                   (local-set-key "\C-n" 'image-dired-dired-next-line)
+                   (local-set-key "\C-p" 'image-dired-dired-previous-line)
+                   (local-set-key [down] 'image-dired-dired-next-line)
+                   (local-set-key [up]   'image-dired-dired-previous-line))))))
+
+;;;; battery
+;; (unless i-am-sakuya
+;; (when i-am-colgate
+(when nil
+  (when (and (> emacs-major-version 21) (require 'battery nil t))
+    (when battery-status-function         ; if battery-status-function isn't nil we most likely have a battery (this usage is fugly as hell btw).
+      (setq battery-mode-line-format "[%b%p%%,%t]")
+      (display-battery-mode))))
+
+;;;; wdired
+(setq wdired-allow-to-change-permissions t)
+
+;;;; winner-mode
+(winner-mode 1)
+
+;;;; JDE
+;; (eval-after-load 'jde
+;;   '(setq jde-enable-abbrev-mode t
+;;          jde-mode-abbreviations '(("disp" . "System.out.println") ("ca" . "catch (Exception e) {") ("cl" . "class") ("co" . "const") ("ma" . "public static void main(String[] args)") ("pr" . "private") ("pro" . "protected") ("pu" . "public") ("st" . "static") ("string" . "String") ("sy" . "synchronized"))))
+(eval-after-load 'jde
+  '(setq ;; jde-enable-abbrev-mode t
+         jde-enable-abbrev-mode nil
+         jde-mode-abbreviations '(("disp" . "System.out.println") ("ca" . "catch (Exception e) {") ("cl" . "class") ("co" . "const") ("ma" . "public static void main(String[] args)") ("pr" . "private") ("pro" . "protected") ("pu" . "public") ("st" . "static") ("sy" . "synchronized"))))
+
+
+
+;;;; ERC
+(eval-after-load 'erc
+  '(progn
+     (unless (and (require 'erc-highlight-nicknames nil t)
+                  (add-to-list 'erc-modules 'highlight-nicknames)
+                  ;; (erc-update-modules)
+                  )
+       (princ "No, I no get highlighted nicknames!!!!!!!!111oneoneeleventwelve"))
+     (require 'erc-dcc)
+     (require 'erc-log)
+     ;; (require 'erc-truncate)
+     (defvar erc-insert-post-hook)
+     (add-hook 'erc-insert-post-hook
+               'erc-truncate-buffer)
+     (setq erc-log-channels-directory "~/erclogs/"
+           erc-save-buffer-on-part nil
+           erc-save-queries-on-quit nil
+           erc-log-write-after-send t
+           erc-log-write-after-insert t
+           erc-truncate-buffer-on-save t
+           erc-nick "Xantoz")
+     (erc-log-enable)))
+
+;;;; PROLOG
+;; ;; Connecting ".pl" files to prolog-mode
+;; (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
+;;                                auto-mode-alist))
+
+;; The suffix ".pl" is traditional, but conflicts with the more
+;; popular language Perl. Some people choose to use ".pro" as a suffix
+;; for Prolog files. In that case the next line is better than the one
+;; above.
+(setq auto-mode-alist (append '(("\\.pro$" . prolog-mode))
+                              auto-mode-alist))
+
+;;;; debian postinst file should open with sh-mode
+(push '("postinst" . sh-mode) auto-mode-alist)
+
+(eval-after-load 'prolog
+  '(progn
+     (defun set-prolog-system (system)
+       (interactive "Ssystem: ")
+       (setq prolog-system system)
+       (setq prolog-program-name (case prolog-system
+                                   (gnu "gprolog")
+                                   (swi "swipl")
+                                   (sicstus (cond ((or i-am-monad i-am-udongein) "/usr/local/sicstus4.1.2/bin/sicstus")
+                                                  (i-am-colgate                  "/usr/local/sicstus4.2.3/bin/sicstus")
+                                                  (i-am-csc-ubuntu               "/opt/sicstus/4.2.0/bin/sicstus")
+                                                  (t                             "sicstus")))))
+       (when (eq prolog-system 'gnu)
+         (setq prolog-consult-string "[%f].")))
+     (setq prolog-indent-width 4)
+     (set-prolog-system (if (and (not i-am-csc-ubuntu) (eq system-type 'gnu/linux)) 'swi 'sicstus))))
+
+;;;; HASKELL
+;(add-hook 'haskell-mode-hook 'turn-on-haskell-ghci)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+
+;;;; Octave
+(add-hook 'octave-mode-hook #'(lambda () (setq comment-start "% "))) ; for MATLAB compatibility
+
+;;;; Rudel
+(defun load-rudel ()
+  (interactive)
+  (require 'rudel-mode)
+  (require 'rudel-obby)
+  (global-rudel-minor-mode))
+
+;;;; new frame hook
+;; (add-hook 'after-make-frame-functions
+;;           (lambda ()
+;;             (toggle-night-mode)
+;;             (cond (i-am-colgate  (set-frame-font "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1" t))
+;;                   (i-am-udongein (set-frame-font "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*" t)))))
+(when (> emacs-major-version 21)
+  (add-to-list 'default-frame-alist (cons 'background-color "gray15"))
+  (add-to-list 'default-frame-alist (cons 'foreground-color "wheat"))
+  (add-to-list 'default-frame-alist (cons 'cursor-color "wheat"))
+  (add-to-list 'default-frame-alist (cons 'night-mode-on t))
+  (when (or i-am-colgate i-am-udongein)
+    (add-to-list 'default-frame-alist (cons 'font (cond
+                                                   ;; (i-am-colgate  "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1")
+                                                   ;; (i-am-colgate  "-*-fixed-normal-normal-normal-*-13-*-*-*-*-*-*-*")
+                                                   ;; (i-am-colgate "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+                                                   (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
+                                                   ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+                                                   (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*"))))))
+
+
+;; (push 'font frame-inherited-parameters)
+;; (push 'background-color frame-inherited-parameters)
+;; (push 'foreground-color frame-inherited-parameters)
+
+
+;;;; my hacky functions here
+(defun lunix-mode ()
+  (interactive)
+  (c-set-style "linux")
+  (setq indent-tabs-mode t))
+
+(when (featurep 'x)
+  (defun night-mode ()
+    (interactive)
+    (set-background-color "gray15")
+    (set-foreground-color "wheat")
+    (set-cursor-color "wheat")
+    (message "Night mode on")
+    (set-frame-parameter nil 'night-mode-on t))
+
+  (defun day-mode ()
+    (interactive)
+    (set-background-color "white")
+    (set-foreground-color "black")
+    (set-cursor-color "black")
+    (message "Night mode off")
+    (set-frame-parameter nil 'night-mode-on nil))
+
+  (defun toggle-night-mode ()
+    (interactive)
+    (if (frame-parameter nil 'night-mode-on)
+        (day-mode)
+      (night-mode)))
+
+  (global-set-key [f12] 'toggle-night-mode)
+  (global-set-key [SunF37] 'toggle-night-mode))
+
+
+(defun dired-mark-images ()
+  (interactive)
+  (dired-mark-files-regexp (image-file-name-regexp)))
+
+(defun image-dired-dired-mark-untagged-files ()
+  (interactive)
+  (dired-unmark-all-marks)
+  (dired-mark-images)
+  (dired-map-over-marks
+   (unless (equal (image-dired-list-tags (dired-get-filename))
+                  '(""))
+     (dired-unmark nil))
+   nil
+   t))
+
+(defun %time (fn)
+  (let* ((t0 (current-time)) result)
+    (setq result (funcall fn))
+    (print (time-to-seconds (time-subtract (current-time) t0)))
+    result))
+
+(defmacro time (form)
+  `(%time (lambda () ,form)))
+
+(defun latex-insert-figure (rawr)
+  (interactive "Mname: ")
+  (insert "\\begin{figure}[H]\n")
+  (insert "  \\includegraphics{" rawr ".eps}\n")
+  (insert "  \\caption{" rawr "}\n")
+  (insert "\\end{figure}\n"))
+
+;;;; this is really crap over from the minijava project
+(defun woop (a)
+  (interactive "Mwoop: ")
+  (insert "case sym." (format "%s" a) ": ")
+  (insert "return \"" (format "%s" a) "\";\n"))
+
+(defun woopity ()
+  (dolist (a '(GREATERTHAN TRUELITERAL BLOCKCLOSE BITWISEXOR GREATERTHANEQUAL LONGLITERAL BLOCKOPEN RIGHTPAREN BITWISEAND NOTEQUAL INDEXCLOSE INT PRINTLN LEFTPAREN LESSTHANEQUAL STATIC SEMICOLON NOT AND FALSELITERAL LESSTHAN OR COMMA CLASS DIV BITWISEOR ASSIGN IF THIS DOT EOF BOOLEAN RETURN EQUAL NEW error MUL ADD VOID INTLITERAL INDEXOPEN ELSE WHILE PUBLIC EXTENDS LONG STRING SUB LENGTH IDENTIFIER))
+    (woop a)))
+;;;; end crap
+
+
+(require 'uniquify)
+(setq
+  uniquify-buffer-name-style 'post-forward
+  uniquify-separator ":")
+
+
+
+;; (defun insert-mode-comment (rawr)
+;;   (interactive "Mmode: ")
+;;   (insert (concat comment-start "-*- Mode: " rawr " -*-")))
+
+(defun insert-mode-comment (arg)
+  (interactive "P")
+  (insert (concat comment-start
+                  "-*- Mode: "
+                  (if arg
+                      (read-from-minibuffer "mode: ")
+                      mode-name)
+                  " -*-")))
+
+(defun insert-printf-thing (string)
+  (interactive "Mstring: ")
+  (indent-for-tab-command)
+  (insert "printf(\"" string " %zd\\n\", " string ");\n"))
+
+
+;; Do stuff to the frame font
+(defun frame-font-grow (n)
+  (interactive "P")
+  (unless n (setf n 1))
+  (let ((fonty (font-spec :name (frame-parameter nil 'font))))
+    (font-put fonty :size (+ n (font-get fonty :size)))
+    (set-frame-font (font-xlfd-name fonty) t)
+    (message "Font size: %d" (font-get fonty :size))))
+
+(defun frame-font-shrink (n)
+  (interactive "P")
+  (unless n (setf n 1))
+  (frame-font-grow (- n)))
+
+(defun set-frame-font-size (size)
+  (interactive "nSize: ")
+  (let ((fonty (font-spec :name (frame-parameter nil 'font))))
+    (font-put fonty :size size)
+    (set-frame-font (font-xlfd-name fonty) t)
+    (message "Font size: %d" (font-get fonty :size))))
+
+
+;; default font size 13 pt on antons-deb
+(when i-am-antons-deb
+  (set-face-attribute 'default nil :height 100))
+
+(global-set-key (kbd "C-x M-0") 'set-frame-font-size)
+(global-set-key (kbd "C-x M--") 'frame-font-shrink)
+(global-set-key (kbd "C-x M-+") 'frame-font-grow)
+(global-set-key (kbd "C-x M-=") 'frame-font-grow)
+
+;; (when (and i-am-antons-deb (featurep 'x))
+;;   (set-frame-font-size 13))
+
+;;;; "stolen" hacky functions here
+(defun bf-pretty-print-xml-region (begin end)
+  "Pretty format XML markup in region. You need to have nxml-mode
+http://www.emacswiki.org/cgi-bin/wiki/NxmlMode installed to do
+this.  The function inserts linebreaks to separate tags that have
+nothing but whitespace between them.  It then indents the markup
+by using nxml's indentation rules."
+  (interactive "r")
+  (save-excursion
+      (nxml-mode)
+      (goto-char begin)
+      (while (search-forward-regexp "\>[ \\t]*\<" nil t)
+        (backward-char) (insert "\n"))
+      (indent-region begin end))
+    (message "Ah, much better!"))
+
+(defvar default-alpha '(95 95))
+(setq day-mode-alpha '(80 80))
+(add-to-list 'default-frame-alist `(alpha ,@default-alpha))
+(defun toggle-transparency ()
+  (interactive)
+  (if (/=
+       (car (frame-parameter nil 'alpha))
+       100)
+      (set-frame-parameter nil 'alpha '(100 100))
+      (set-frame-parameter nil 'alpha (if (frame-parameter 'nil 'night-mode-on)
+                                          default-alpha
+                                          day-mode-alpha)))) ;TODO: fix this toggling to become better at understanding night-mode-toggling and all that
+(global-set-key [f11] 'toggle-transparency)
+
+(defun count-words (&optional begin end)
+  "count words between BEGIN and END (region); if no region defined, count words in buffer.
+Non-interactive calls disregard region entirely, but allow for optional begin/end parameters"
+  (interactive "r")
+  (let ((b (if (if (called-interactively-p 'any) (and mark-active begin) begin)
+               begin
+             (point-min)))
+        (e (if (if (called-interactively-p 'any) (and mark-active end) end)
+               end
+             (point-max))))
+    (message "Word count: %s" (how-many "\\w+" b e))))
+;; (global-set-key (kbd "\C-x w") 'count-words)
+
+(defun count-words-tex ()
+  (interactive)
+  (shell-command-on-region (point-min) (point-max) "detex | wc -w"))
+
+(defun count-words-dwim (&optional begin end)
+  "count words between BEGIN and END (region); if no region defined, count words in buffer.
+DO WHAT I MEAN
+TODO: Should i count-words-tex for regions somehow too?"
+  (interactive "r")
+  (cond ((and (not mark-active) (find major-mode '(latex-mode tex-mode))) (count-words-tex))
+        (t (call-interactively 'count-words))))
+
+(global-set-key (kbd "\C-x w") 'count-words-dwim)
+
+
+
+(defun scratch-lisp-file ()
+  "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into
+   the current buffer."
+  (interactive)
+  (goto-char 0)
+  (let* ((file (file-name-nondirectory (buffer-file-name)))
+         (package (file-name-sans-extension file)))
+    (insert ";;;; " file "\n")
+    (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
+    (insert "(in-package #:" package ")\n\n")))
+
+
+;;;; make dired-do-async-shell-command capable of multiple programs by using rename-uniquely
+(defadvice shell-command (after shell-in-new-buffer (command &optional output-buffer error-buffer))
+  (when (get-buffer "*Async Shell Command*")
+    (with-current-buffer "*Async Shell Command*"
+      (rename-uniquely))))
+(ad-activate 'shell-command)
+
+;;;; wierd automatic stuff
+(put 'upcase-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+
+;;;; stuff from etu's conf (migrate your own stuff to use use-package in the future)
+(unless (package-installed-p 'use-package)
+  (progn
+    (package-refresh-contents)
+    (package-install 'use-package)))
+(require 'use-package)
+
+(when 0
+  (use-package php-mode
+    :ensure t
+    :config
+    (progn
+      (setq-default php-mode-coding-style 'psr2)
+      (use-package flymake-php
+        :ensure t
+        :config
+        (add-hook 'php-mode-hook (lambda () (flymake-mode))))))
+
+  (use-package web-mode
+    :ensure t
+    :mode "\\.twig\\'"
+    :config (progn
+              (setq-default web-mode-css-indent-offset 4   ; CSS
+                            ;; web-mode-markup-indent-offset 4 ; HTML
+                            ;; web-mode-code-indent-offset 4 ; JS/PHP/etc
+                            web-mode-markup-indent-offset 2
+                            web-mode-code-indent-offset 2
+                            )))
+
+  (use-package ac-php-company
+    :ensure ac-php
+    :config
+    (progn
+      ;; (setq-default ac-php-tags-path
+      ;;               (concat user-emacs-cache-directory "/ac-php"))
+
+      (add-hook 'php-mode-hook
+                '(lambda ()
+                   (unless (executable-find "ctags")
+                     (error "Program: ctags is missing"))
+
+                   ;; Add build company-backends with dabbrev and ac-php
+                   (set (make-local-variable 'company-backends)
+                        '((company-dabbrev-code
+                           company-gtags
+                           company-etags
+                           company-keywords
+                           company-ac-php-backend)))
+
+                   (company-mode t)))
+
+      (define-key php-mode-map (kbd "C-]") 'ac-php-find-symbol-at-point)
+      (define-key php-mode-map (kbd "C-t") 'ac-php-location-stack-back)))
+;;;; end etu stuff
+  )
+
+(use-package buffer-move
+  :ensure t
+  :config (progn (global-set-key (kbd "<C-S-up>")     'buf-move-up)
+                 (global-set-key (kbd "<C-S-down>")   'buf-move-down)
+                 (global-set-key (kbd "<C-S-left>")   'buf-move-left)
+                 (global-set-key (kbd "<C-S-right>")  'buf-move-right)))
+
+(eval-after-load 'magit
+  '(setq magit-log-margin
+         ;; '(t "%Y-%m-%d %H:%M:%S" magit-log-margin-width t 18)
+         '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)
+         ;; '(t "%x %X" magit-log-margin-width t 18)
+         ))
+
+(column-number-mode 1)
+
+(require 'whitespace)
+(setq whitespace-style '(face tabs trailing empty lines-tail))
+(setq whitespace-line-column nil)       ; Honor fill column
+(dolist (i '(c-mode-common-hook
+             makefile-mode-hook
+             lisp-mode-hook
+             shell-mode-hook
+             asm-mode-hook
+             web-mode-hook))
+  (add-hook i (lambda () (whitespace-mode 1)) t))
+
+;; Make emacs stop whining about setting this in .dir-locals
+(put 'cscope-initial-directory      'safe-local-variable t)
+(put 'python-indent                 'safe-local-variable t)
+(put 'web-mode-markup-indent-offset 'safe-local-variable t)
+(put 'web-mode-code-indent-offset   'safe-local-variable t)
+;; make this unrisky, against better knowing(?)
+(put 'cscope-program 'risky-local-variable nil)
+
+(eval-after-load 'rng-loc
+  '(add-to-list 'rng-schema-locating-files "~/.emacs.d/schema/schemas.xml"))
+
+(setq dired-listing-switches "-alh")    ; human sizes in dired
+(setq list-directory-verbose-switches "-lh")
+(setq find-name-arg "-iname")           ; I like to search case-insensitively by default
+(setq hanoi-use-faces t)
+
+(setq semantic-imenu-index-directory t)
+
+
+(setq custom-file "~/.emacs-custom")
+(load custom-file)

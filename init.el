@@ -76,6 +76,7 @@
       (add-to-list 'load-path ele))))
 
 (maybe-add-to-load-path
+ "~/.config/emacs/elisp/"
  "~/.elisp/"
  "~/.elisp/emms/lisp/"
  "~/.elisp/haskell-mode-2.8.0/"

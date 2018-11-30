@@ -332,7 +332,7 @@
 (defun find-browser ()
   "Finds browser to use, from an internal list. Earlier takes precedence.
 Graphical browsers only."
-  (let ((browsers (list "conkeror" "firefox" "chromium" "midori" "surf")))
+  (let ((browsers (list "webmacs" "firefox" "conkeror" "chromium" "midori" "surf")))
     (reduce (lambda (a b) (or a b))     ;or ain't a function, can't use it without thunk
             (mapcar #'executable-find browsers))))
 

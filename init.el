@@ -35,12 +35,9 @@
 (defconst i-am-souseiseki (string-prefix-p "Souseiseki" (system-name)))
 (defconst i-am-patchouli  (string-prefix-p "patchouli" (system-name)))
 (defconst i-am-kombu      (string-prefix-p "kombu" (system-name)))
-(defconst i-am-antons-deb (string-prefix-p "antons-deb" (system-name)))
-(defconst i-am-ekinant-debian (string= (system-name) "ekinant-debian"))
-(defconst i-am-elx (string= (substring (system-name) 0 3) "elx"))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
-(defconst i-have-battery (or i-am-colgate i-am-antons-deb))
+(defconst i-have-battery (or i-am-colgate))
 
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
@@ -98,26 +95,15 @@
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)
-;; same goes for rainbow-mode
-(require 'rainbow-mode nil t)
 
 ;; ;; Pulsing on goto-line among others
 ;; (when (require 'pulse nil t)
 ;;   (pulse-toggle-integration-advice 1))
 
 
-
-;; (when (file-directory-p "~/.elisp/")
-;;   (add-to-list 'load-path "~/.elisp/")) ; Add stuff to load-path
-;; (when (file-directory-p "~/.elisp/emms/lisp/")
-;;   (add-to-list 'load-path "~/.elisp/emms/lisp/"))
-;; (when (file-directory-p "~/.elisp/haskell-mode-2.8.0/")
-;;   (add-to-list 'load-path "~/.elisp/haskell-mode-2.8.0/"))
-
 (setq inhibit-startup-screen t)
 
 
-;; (menu-bar-mode -1)
 (when (featurep 'x)
   (tool-bar-mode -1)
   ;; (scroll-bar-mode -1)
@@ -235,7 +221,6 @@
               ;; (c-set-style "ellemtel")           ; set indentation style
               (c-set-style "linux")           ; set indentation style
               (setq c-doc-comment-style '(gtkdoc javadoc autodoc))
-              ;; (setq c-basic-offset (if i-am-antons-deb 2 4))
               (setq c-basic-offset 4)
               (local-set-key (kbd "C-c C-h") 'c-toggle-hungry-state)
               (local-set-key [(control tab)]     ; move to next tempo mark
@@ -469,28 +454,10 @@ Graphical browsers only."
   ;; lite mer regexp at lilla mplayer
   (emms-player-set emms-player-mplayer 'regex "\\`\\(http\\|mms\\)://\\|\\.\\([Oo][Gg][Gg]\\|[Mm][Pp]3\\|[Ww][Aa][Vv]\\|[Mm][Pp][Gg]\\|[Mm][Pp][Ee][Gg]\\|[Ww][Mm][Vv]\\|[Ww][Mm][Aa]\\|[Mm][Oo][Vv]\\|[Aa][Vv][Ii]\\|[Dd][Ii][Vv][Xx]\\|[Oo][Gg][Mm]\\|[Oo][Gg][Vv]\\|[Aa][Ss][Ff]\\|[Mm][Kk][Vv]\\|[Rr][Mm]\\|[Rr][Mm][Vv][Bb]\\|[Mm][Pp]4\\|[Ff][Ll][Aa][Cc]\\|[Vv][Oo][Bb]\\|[Mm]4[Aa]\\|[Aa][Pp][Ee]\\|[Tt][Tt][Aa]\\|[Aa][Aa][Cc]\\)\\'"))
 
-
-;;;; SlickCopy
-;; (defadvice kill-ring-save (before slick-copy activate compile)
-;;   "When called interactively with no active region, copy a single line instead."
-;;   (interactive
-;;    (if mark-active (list (region-beginning) (region-end))
-;;      (message "Copied line")
-;;      (list (line-beginning-position)
-;;            (line-beginning-position 2)))))
-
-;; (defadvice kill-region (before slick-cut activate compile)
-;;   "When called interactively with no active region, kill a single line instead."
-;;   (interactive1;1704;0c
-;;    (if mark-active (list (region-beginning) (region-end))
-;;      (list (line-beginning-position)
-;;            (line-beginning-position 2)))))
-
-
 ;;;; Find function
 (find-function-setup-keys)
 
-;;;; iswitchb-mode
+;;;; iswitchb-mode  (I don't care that it is deprecated. I prefer this over ido-mode!)
 (iswitchb-mode 1)
 (setq iswitchb-default-method
       (if i-am-headless-server
@@ -527,13 +494,10 @@ Graphical browsers only."
                    (local-set-key [up]   'image-dired-dired-previous-line))))))
 
 ;;;; battery
-;; (unless i-am-sakuya
-;; (when i-am-colgate
-(when nil
-  (when (and (> emacs-major-version 21) (require 'battery nil t))
-    (when battery-status-function         ; if battery-status-function isn't nil we most likely have a battery (this usage is fugly as hell btw).
-      (setq battery-mode-line-format "[%b%p%%,%t]")
-      (display-battery-mode))))
+(when (and (> emacs-major-version 21) (require 'battery nil t))
+  (when battery-status-function         ; if battery-status-function isn't nil we most likely have a battery
+    (setq battery-mode-line-format "[%b%p%%,%t]")
+    (display-battery-mode 1)))
 
 ;;;; wdired
 (setq wdired-allow-to-change-permissions t)
@@ -771,18 +735,10 @@ Graphical browsers only."
     (set-frame-font (font-xlfd-name fonty) t)
     (message "Font size: %d" (font-get fonty :size))))
 
-
-;; default font size 13 pt on antons-deb
-(when i-am-antons-deb
-  (set-face-attribute 'default nil :height 100))
-
 (global-set-key (kbd "C-x M-0") 'set-frame-font-size)
 (global-set-key (kbd "C-x M--") 'frame-font-shrink)
 (global-set-key (kbd "C-x M-+") 'frame-font-grow)
 (global-set-key (kbd "C-x M-=") 'frame-font-grow)
-
-;; (when (and i-am-antons-deb (featurep 'x))
-;;   (set-frame-font-size 13))
 
 ;;;; "stolen" hacky functions here
 (defun bf-pretty-print-xml-region (begin end)

@@ -222,6 +222,7 @@
                   (c-subword-mode 1))
               ;; (c-set-style "ellemtel")           ; set indentation style
               (c-set-style "linux")           ; set indentation style
+              (c-set-offset 'inextern-lang 0) ; don't indent inside extern "C" blocks
               (setq c-doc-comment-style '(gtkdoc javadoc autodoc))
               (setq c-basic-offset 4)
               (local-set-key (kbd "C-c C-h") 'c-toggle-hungry-state)

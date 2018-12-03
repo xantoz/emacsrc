@@ -157,8 +157,10 @@
           (lambda()
             (setq imenu-create-index-function 'python-imenu-create-index)))
 
-;; (when (> emacs-major-version 21)
-;;   (cua-selection-mode t))
+;; Enable CUA selection mode without the C-z/C-x/C-c/C-v bindings.
+;; Use case: rectangular regions using C-RET
+(when (> emacs-major-version 21)
+  (cua-selection-mode t))
 
 (setq display-buffer-reuse-frames t)
 

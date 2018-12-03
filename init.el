@@ -930,4 +930,4 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 
 (setq custom-file "~/.emacs-custom")
-(load custom-file)
+(load custom-file t t)

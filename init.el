@@ -834,7 +834,7 @@ TODO: Should i count-words-tex for regions somehow too?"
     (package-install 'use-package)))
 (require 'use-package)
 
-(when 0
+(when nil
   (use-package php-mode
     :ensure t
     :config

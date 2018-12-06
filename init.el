@@ -332,24 +332,6 @@ Graphical browsers only."
        (setq browse-url-browser-function 'w3m-browse-url)
        (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)))
 
-;(windmove-default-keybindings 'meta)
-;(windmove-default-keybindings)
-
-;; Make window switching a little easier. C-x-o is a pain.
-;; Unbind C-t. I don't really care about transposing chars.
-;; FIXME: Conflicts with ratpoison
-(global-unset-key "\C-t")
-;; Turn C-t into a prefix key
-(define-prefix-command 'ctrl-t-prefix)
-;; And within C-t bind vi-style navigation shortcuts
-;; to window switching
-(define-key 'ctrl-t-prefix "j" 'windmove-down)
-(define-key 'ctrl-t-prefix "k" 'windmove-up)
-(define-key 'ctrl-t-prefix "h" 'windmove-left)
-(define-key 'ctrl-t-prefix "l" 'windmove-right)
-(global-set-key "\C-t" 'ctrl-t-prefix)
-
-
 ;;;; etags customization
 ;; swap these two buttons, I want this to behave like SLIME does
 (define-key esc-map "*" 'tags-loop-continue)
@@ -504,9 +486,6 @@ Graphical browsers only."
 
 ;;;; wdired
 (setq wdired-allow-to-change-permissions t)
-
-;;;; winner-mode
-(winner-mode 1)
 
 ;;;; JDE
 ;; (eval-after-load 'jde
@@ -883,12 +862,23 @@ TODO: Should i count-words-tex for regions somehow too?"
 ;;;; end etu stuff
   )
 
+
+;;;; Window management
+;; winner-mode (undo) (C-x left, C-x right)
+(winner-mode 1)
+
+;; Make window switching a little easier. C-x-o is a pain.
+;; Default keybindings are the arrow keys shifted
+(windmove-default-keybindings)
+
+;; Exchange contents of windows
 (use-package buffer-move
   :ensure t
   :config (progn (global-set-key (kbd "<C-S-up>")     'buf-move-up)
                  (global-set-key (kbd "<C-S-down>")   'buf-move-down)
                  (global-set-key (kbd "<C-S-left>")   'buf-move-left)
                  (global-set-key (kbd "<C-S-right>")  'buf-move-right)))
+;;;; END Frame management
 
 (eval-after-load 'magit
   '(setq magit-log-margin

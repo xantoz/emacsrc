@@ -568,37 +568,25 @@ Graphical browsers only."
   (require 'rudel-obby)
   (global-rudel-minor-mode))
 
-;;;; new frame hook
-;; (add-hook 'after-make-frame-functions
-;;           (lambda ()
-;;             (toggle-night-mode)
-;;             (cond (i-am-colgate  (set-frame-font "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1" t))
-;;                   (i-am-udongein (set-frame-font "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*" t)))))
+;;;; Font settings (applicable on some systems only)
+(when (> emacs-major-version 21)
+  (let ((font (cond
+               ;; (i-am-colgate  "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1")
+               ;; (i-am-colgate  "-*-fixed-normal-normal-normal-*-13-*-*-*-*-*-*-*")
+               ;; (i-am-colgate "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
+               ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*"))))
+    (when font
+      (add-to-list 'default-frame-alist (cons 'font font)))))
+;;;; END font settings
+
+;;;; "Night mode" (really sort of my default "theme" with a key to toggle to default black on white for bright days)
 (when (> emacs-major-version 21)
   (add-to-list 'default-frame-alist (cons 'background-color "gray15"))
   (add-to-list 'default-frame-alist (cons 'foreground-color "wheat"))
   (add-to-list 'default-frame-alist (cons 'cursor-color "wheat"))
-  (add-to-list 'default-frame-alist (cons 'night-mode-on t))
-  (when (or i-am-colgate i-am-udongein)
-    (add-to-list 'default-frame-alist (cons 'font (cond
-                                                   ;; (i-am-colgate  "-misc-fixed-medium-r-normal--13-120-75-75-c-80-iso8859-1")
-                                                   ;; (i-am-colgate  "-*-fixed-normal-normal-normal-*-13-*-*-*-*-*-*-*")
-                                                   ;; (i-am-colgate "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-                                                   (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
-                                                   ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-                                                   (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*"))))))
-
-
-;; (push 'font frame-inherited-parameters)
-;; (push 'background-color frame-inherited-parameters)
-;; (push 'foreground-color frame-inherited-parameters)
-
-
-;;;; my hacky functions here
-(defun lunix-mode ()
-  (interactive)
-  (c-set-style "linux")
-  (setq indent-tabs-mode t))
+  (add-to-list 'default-frame-alist (cons 'night-mode-on t)))
 
 (when (featurep 'x)
   (defun night-mode ()
@@ -625,7 +613,13 @@ Graphical browsers only."
 
   (global-set-key [f12] 'toggle-night-mode)
   (global-set-key [SunF37] 'toggle-night-mode))
+;;;; END "Night mode"
 
+;;;; my hacky functions here
+(defun lunix-mode ()
+  (interactive)
+  (c-set-style "linux")
+  (setq indent-tabs-mode t))
 
 (defun dired-mark-images ()
   (interactive)
@@ -657,6 +651,7 @@ Graphical browsers only."
   (insert "  \\includegraphics{" rawr ".eps}\n")
   (insert "  \\caption{" rawr "}\n")
   (insert "\\end{figure}\n"))
+;;;; END
 
 ;;;; this is really crap over from the minijava project
 (defun woop (a)

@@ -532,6 +532,10 @@ Graphical browsers only."
 (setq auto-mode-alist (append '(("\\.pro$" . prolog-mode))
                               auto-mode-alist))
 
+;;;; Makefile.<something> should be opened in makefile mode
+(setq auto-mode-alist (acons "[Mm]akefile\\..*$" #'makefile-gmake-mode
+                             auto-mode-alist))
+
 ;;;; debian postinst file should open with sh-mode
 (push '("postinst" . sh-mode) auto-mode-alist)
 

@@ -654,6 +654,11 @@ Graphical browsers only."
   (insert "  \\includegraphics{" rawr ".eps}\n")
   (insert "  \\caption{" rawr "}\n")
   (insert "\\end{figure}\n"))
+
+(defun xterm ()
+  "Launches an xterm in the current directory"
+  (interactive)
+  (start-process "xterm" "nil" "xterm"))
 ;;;; END
 
 ;;;; this is really crap over from the minijava project

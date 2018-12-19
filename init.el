@@ -232,7 +232,6 @@
 ; that you don't need to keep using TAB to align yourself when coding.
 (global-set-key "\C-m" 'newline-and-indent)
 
-
 (when (require 'xcscope nil t)
   (when (fboundp 'cscope-setup)         ;some versions of xcscope do not have the cscope-setup function
     (cscope-setup))
@@ -618,7 +617,7 @@ Graphical browsers only."
   (global-set-key [SunF37] 'toggle-night-mode))
 ;;;; END "Night mode"
 
-;;;; my hacky functions here
+;;;; BEGIN my hacky functions here
 (defun lunix-mode ()
   (interactive)
   (c-set-style "linux")

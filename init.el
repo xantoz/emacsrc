@@ -642,11 +642,9 @@ Graphical browsers only."
   uniquify-buffer-name-style 'post-forward
   uniquify-separator ":")
 
-
-
-;; (defun insert-mode-comment (rawr)
-;;   (interactive "Mmode: ")
-;;   (insert (concat comment-start "-*- Mode: " rawr " -*-")))
+(defun insert-mode-comment-alt (mode)
+  (interactive "Mmode: ")
+  (insert (concat comment-start "-*- Mode: " mode " -*-")))
 
 (defun insert-mode-comment (arg)
   (interactive "P")

@@ -274,11 +274,6 @@
       (define-key map "\C-csT" 'cscope-tell-user-about-directory)
       (define-key map "\C-csD" 'cscope-dired-directory))))
 
-
-; With the below global key-bindings, it is possible to press 'f12' (you could change this to any other key you want) and automagically, a partial string gets expanded. For example, if you have typed "mylon" and press 'F12', "mylon" will get replaced by "MyLongIdentifierName" if that string exists somewhere in your set of buffers.
-;; (global-set-key [f12]         'dabbrev-expand)
-;; (define-key esc-map [f12]     'dabbrev-completion)
-
 ;; fix silly emacs defaults
 (setq sentence-end-double-space nil)
 
@@ -343,31 +338,8 @@ Graphical browsers only."
                 (use-local-map (copy-keymap (current-local-map))))
               (local-set-key (kbd "C-x k") 'server-edit))))
 
-;;;; Start the emacs server. not needed /etc/init.d/emacs makes sure the server starts
-;; (server-start)
-
-
-;; (when (or (require 'slime nil t) (load "~/quicklisp/slime-helper.el" t))
-;;   (slime-setup)
-;;   (when (string= (system-name) "lain.local")
-;;     (setq inferior-lisp-program "clisp -K full")))
-
-;; ;;;; SLIME
-;; (set-language-environment "UTF-8")
-;; (setq slime-net-coding-system 'utf-8-unix)
-
-;; (setq inferior-lisp-program (or (executable-find "sbcl")
-;;                                 (executable-find "clisp"))) ; your Lisp system
-
-
-;; (when (require 'slime nil t)
-;;   (setup-slime)
-;;   (setq inferior-lisp-program (or (executable-find "sbcl")
-;;                                   (executable-find "clisp")))) ; your Lisp system
-
 (when (load (expand-file-name "~/quicklisp/slime-helper.el") t)
   (setq inferior-lisp-program "sbcl"))
-
 
 ;; (defun slem ()
 ;;   (interactive)
@@ -486,9 +458,6 @@ Graphical browsers only."
 (setq wdired-allow-to-change-permissions t)
 
 ;;;; JDE
-;; (eval-after-load 'jde
-;;   '(setq jde-enable-abbrev-mode t
-;;          jde-mode-abbreviations '(("disp" . "System.out.println") ("ca" . "catch (Exception e) {") ("cl" . "class") ("co" . "const") ("ma" . "public static void main(String[] args)") ("pr" . "private") ("pro" . "protected") ("pu" . "public") ("st" . "static") ("string" . "String") ("sy" . "synchronized"))))
 (eval-after-load 'jde
   '(setq ;; jde-enable-abbrev-mode t
          jde-enable-abbrev-mode nil
@@ -520,10 +489,6 @@ Graphical browsers only."
      (erc-log-enable)))
 
 ;;;; PROLOG
-;; ;; Connecting ".pl" files to prolog-mode
-;; (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode))
-;;                                auto-mode-alist))
-
 ;; The suffix ".pl" is traditional, but conflicts with the more
 ;; popular language Perl. Some people choose to use ".pro" as a suffix
 ;; for Prolog files. In that case the next line is better than the one
@@ -765,7 +730,6 @@ Non-interactive calls disregard region entirely, but allow for optional begin/en
                end
              (point-max))))
     (message "Word count: %s" (how-many "\\w+" b e))))
-;; (global-set-key (kbd "\C-x w") 'count-words)
 
 (defun count-words-tex ()
   (interactive)
@@ -781,8 +745,6 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (global-set-key (kbd "\C-x w") 'count-words-dwim)
 
-
-
 (defun scratch-lisp-file ()
   "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into
    the current buffer."
@@ -793,7 +755,6 @@ TODO: Should i count-words-tex for regions somehow too?"
     (insert ";;;; " file "\n")
     (insert "\n(defpackage #:" package "\n  (:use #:cl))\n\n")
     (insert "(in-package #:" package ")\n\n")))
-
 
 ;;;; make dired-do-async-shell-command capable of multiple programs by using rename-uniquely
 (defadvice shell-command (after shell-in-new-buffer (command &optional output-buffer error-buffer))

@@ -139,8 +139,11 @@
   (global-set-key (kbd "C-?") 'helm-semantic-or-imenu))
 
 (when (and (require 'imenu-anywhere nil t))
-  (cond ((featurep 'helm)
+  (cond ((or (featurep 'helm) (require 'helm nil t))
          (global-set-key (kbd "C-.") 'helm-imenu-anywhere)
+         (global-set-key (kbd "C-M-.") 'imenu-anywhere))
+        ((or (featurep 'ivy) (require 'ivy nil t))
+         (global-set-key (kbd "C-.") 'ivy-imenu-anywhere)
          (global-set-key (kbd "C-M-.") 'imenu-anywhere))
         (t (global-set-key (kbd "C-.") 'imenu-anywhere))))
 

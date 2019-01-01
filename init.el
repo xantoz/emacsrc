@@ -83,6 +83,7 @@
  "~/.config/emacs/elisp/"
  "~/.config/emacs/vendor-elisp/"
  "~/.config/emacs/nix-mode/"
+ "~/.config/emacs/emacs-libvterm/"
  "~/.elisp/"
  "~/.elisp/emms/lisp/"
  "~/.elisp/haskell-mode-2.8.0/"

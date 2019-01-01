@@ -1,3 +1,6 @@
 [submodule "nix-mode"]
 	path = nix-mode
 	url = https://github.com/nixos/nix-mode
+[submodule "emacs-libvterm"]
+	path = emacs-libvterm
+	url = https://github.com/akermu/emacs-libvterm.git

@@ -1,4 +1,4 @@
-;;; screen.el --- terminal initialization for screen and tmux  -*- lexical-binding: t -*-
+;;; screen.xterm.el --- terminal initialization for screen and tmux  -*- lexical-binding: t -*-
 ;; Copyright (C) 1995, 2001-2018 Free Software Foundation, Inc.
 
 (require 'term/screen)
@@ -10,4 +10,4 @@
 
 (provide 'term/screen.xterm)
 
-;; screen.el ends here
+;; screen.xterm.el ends here

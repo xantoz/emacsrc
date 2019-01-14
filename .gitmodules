@@ -1,0 +1,3 @@
+[submodule "nix-mode"]
+	path = nix-mode
+	url = https://github.com/nixos/nix-mode

@@ -74,6 +74,7 @@
 
 (maybe-add-to-load-path
  "~/.config/emacs/elisp/"
+ "~/.config/emacs/nix-mode/"
  "~/.elisp/"
  "~/.elisp/emms/lisp/"
  "~/.elisp/haskell-mode-2.8.0/"

@@ -94,6 +94,9 @@
  "~/.elisp/cedet-1.0/tests/"
  "~/.elisp/google-maps/")
 
+(autoload 'nix-mode "~/.config/emacs/nix-mode/nix-mode.el")
+(add-to-list 'auto-mode-alist '("\\.nix" . nix-mode))
+
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)
 

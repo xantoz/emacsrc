@@ -10,6 +10,12 @@
   (when (not package-archive-contents)
     (package-refresh-contents)))
 
+(unless (package-installed-p 'use-package)
+  (progn
+    (package-refresh-contents)
+    (package-install 'use-package)))
+(require 'use-package)
+
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)
 ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
@@ -113,8 +119,16 @@
   ;; (scroll-bar-mode -1)
   )
 
-
-(require 'ag nil t)
+;; Exchange contents of windows
+(use-package ag
+  :config
+  (progn
+    (defun ag-case (&rest args)
+      "ag, but with case sensitivity"
+      (interactive (advice-eval-interactive-spec
+                    (cadr (interactive-form #'ag))))
+      (let ((ag-arguments (cons "--case-sensitive" ag-arguments)))
+        (apply #'ag args)))))
 
 ;; Mute these
 (dolist (i '(XF86AudioMute
@@ -777,12 +791,6 @@ TODO: Should i count-words-tex for regions somehow too?"
 (put 'erase-buffer 'disabled nil)
 
 ;;;; stuff from etu's conf (migrate your own stuff to use use-package in the future)
-(unless (package-installed-p 'use-package)
-  (progn
-    (package-refresh-contents)
-    (package-install 'use-package)))
-(require 'use-package)
-
 (when nil
   (use-package php-mode
     :ensure t

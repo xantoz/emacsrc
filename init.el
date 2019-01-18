@@ -102,6 +102,8 @@
 
 (autoload 'nix-mode "~/.config/emacs/nix-mode/nix-mode.el")
 (add-to-list 'auto-mode-alist '("\\.nix" . nix-mode))
+(eval-after-load 'nix-mode
+  '(setq nix-indent-function 'nix-indent-line))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

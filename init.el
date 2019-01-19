@@ -40,6 +40,7 @@
 (defconst i-am-souseiseki (string-prefix-p "Souseiseki" (system-name)))
 (defconst i-am-patchouli  (string-prefix-p "patchouli" (system-name)))
 (defconst i-am-kombu      (string-prefix-p "kombu" (system-name)))
+(defconst i-am-cirno      (string-prefix-p "cirno" (system-name)))
 (defconst i-am-nazrin     (string-prefix-p "nazrin" (system-name)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
@@ -568,6 +569,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1"))))
     (when font
       (add-to-list 'default-frame-alist (cons 'font font)))))

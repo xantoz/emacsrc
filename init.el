@@ -44,7 +44,7 @@
 (defconst i-am-nazrin     (string-prefix-p "nazrin" (system-name)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
-(defconst i-have-battery (or i-am-colgate))
+(defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno))
 
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))

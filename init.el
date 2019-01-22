@@ -130,7 +130,7 @@
       "ag, but with case sensitivity"
       (interactive (advice-eval-interactive-spec
                     (cadr (interactive-form #'ag))))
-      (let ((ag-arguments (cons "--case-sensitive" ag-arguments)))
+      (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
         (apply #'ag args)))))
 
 ;; Mute these

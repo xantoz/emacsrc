@@ -649,7 +649,7 @@ Graphical browsers only."
 (defun xterm ()
   "Launches an xterm in the current directory"
   (interactive)
-  (start-process "xterm" "nil" "xterm"))
+  (start-process "xterm" "nil" "xterm" "-ls"))
 ;;;; END
 
 ;;;; this is really crap over from the minijava project

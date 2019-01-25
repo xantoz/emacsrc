@@ -210,8 +210,8 @@
 (global-set-key [delete] 'delete-char)
 
 (setq mouse-drag-copy-region nil)  ; stops selection with a mouse being immediately injected to the kill ring
-(setq x-select-enable-primary nil)  ; stops killing/yanking interacting with primary X11 selection
-;; (setq x-select-enable-primary t)  ; stops killing/yanking interacting with primary X11 selection
+;(setq x-select-enable-primary nil)  ; stops killing/yanking interacting with primary X11 selection
+(setq x-select-enable-primary t)  ; make killing/yanking interact with primary X11 selection
 (setq x-select-enable-clipboard t)  ; makes killing/yanking interact with clipboard X11 selection   ;; these will probably be already set to these values, leave them that way if so!
 
 ; (setf interprogram-cut-function 'x-select-text)

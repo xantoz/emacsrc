@@ -107,6 +107,9 @@
   :mode ("\\.nix" . nix-mode)
   :config (setq nix-indent-function #'nix-indent-line))
 
+(use-package etags-table
+  :defer 1
+  :config (setq etags-table-search-up-depth 99))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

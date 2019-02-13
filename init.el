@@ -81,6 +81,7 @@
 
 (maybe-add-to-load-path
  "~/.config/emacs/elisp/"
+ "~/.config/emacs/vendor-elisp/"
  "~/.config/emacs/nix-mode/"
  "~/.elisp/"
  "~/.elisp/emms/lisp/"

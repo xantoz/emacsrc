@@ -861,10 +861,11 @@ TODO: Should i count-words-tex for regions somehow too?"
 ;; Exchange contents of windows
 (use-package buffer-move
   :ensure t
-  :config (progn (global-set-key (kbd "<C-S-up>")     'buf-move-up)
-                 (global-set-key (kbd "<C-S-down>")   'buf-move-down)
-                 (global-set-key (kbd "<C-S-left>")   'buf-move-left)
-                 (global-set-key (kbd "<C-S-right>")  'buf-move-right)))
+  :defer t
+  :bind (("<C-S-up>" . buf-move-up)
+         ("<C-S-down>" . buf-move-down)
+         ("<C-S-left>" . buf-move-left)
+         ("<C-S-right>" . buf-move-right)))
 ;;;; END Frame management
 
 (eval-after-load 'magit

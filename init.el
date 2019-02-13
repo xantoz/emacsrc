@@ -129,6 +129,7 @@
 
 ;; Exchange contents of windows
 (use-package ag
+  :defer 1
   :config
   (progn
     (defun ag-case (&rest args)

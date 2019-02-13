@@ -149,10 +149,10 @@
              XF86Eject))
   (global-set-key (make-vector 1 i) 'ignore))
 
-(when (require 'crosshairs nil t)
-  (global-set-key (kbd "<f9>") 'crosshairs-flash)
-  (global-set-key (kbd "C-<f9>") 'crosshairs-mode)
-  (setq crosshairs-vline-same-face-flag t))
+(use-package crosshairs
+  :defer t
+  :bind (("<f9>" . crosshairs-flash)
+         ("C-<f9>" . crosshairs-mode)))
 
 ;; C-x C-t crashes badly with ratpoison defaults. C-x t seems to be free, so use that instead
 (global-set-key (kbd "C-x t") 'transpose-lines)

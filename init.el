@@ -84,24 +84,7 @@
  "~/.config/emacs/vendor-elisp/"
  "~/.config/emacs/nix-mode/"
  "~/.config/emacs/emacs-libvterm/"
- "~/.elisp/"
- "~/.elisp/emms/lisp/"
- "~/.elisp/haskell-mode-2.8.0/"
- "~/.elisp/rudel-0.2-4/"
- "~/.elisp/rudel-0.2-4/obby/"
- "~/.elisp/rudel-0.2-4/jupiter/"
- "~/.elisp/nyan-mode/"
- "~/.elisp/jdee/lisp/"
- "~/.elisp/cedet-1.0/cogre/"
- "~/.elisp/cedet-1.0/common/"
- "~/.elisp/cedet-1.0/contrib/"
- "~/.elisp/cedet-1.0/ede/"
- "~/.elisp/cedet-1.0/eieio/"
- "~/.elisp/cedet-1.0/semantic/"
- "~/.elisp/cedet-1.0/speedbar/"
- "~/.elisp/cedet-1.0/srecode/"
- "~/.elisp/cedet-1.0/tests/"
- "~/.elisp/google-maps/")
+ "~/.elisp/")
 
 (use-package nix-mode
   :commands nix-mode

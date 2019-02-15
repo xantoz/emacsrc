@@ -898,7 +898,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (setq find-name-arg "-iname")           ; I like to search case-insensitively by default
 (setq hanoi-use-faces t)
 
-(setq semantic-imenu-index-directory t)
+(when (>= emacs-major-version 26)
+  (setq semantic-imenu-index-directory t))
 
 
 (setq custom-file "~/.emacs-custom")

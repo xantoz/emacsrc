@@ -370,8 +370,16 @@ Graphical browsers only."
                 (use-local-map (copy-keymap (current-local-map))))
               (local-set-key (kbd "C-x k") 'server-edit))))
 
-(when (load (expand-file-name "~/quicklisp/slime-helper.el") t)
-  (setq inferior-lisp-program "sbcl"))
+;; lazily load ~/quicklisp/slime-helper.el, if it exists
+;; cannot use use-package, because slime-helper.el is not a proper require:eable package
+(let ((quicklisp-slime-helper-path (expand-file-name "~/quicklisp/slime-helper.el")))
+  (when (file-regular-p quicklisp-slime-helper-path)
+    (autoload 'slime                quicklisp-slime-helper-path "" t   nil)
+    (autoload 'slime-mode           quicklisp-slime-helper-path "" t   nil)
+    (autoload 'slime-lisp-mode-hook quicklisp-slime-helper-path "" nil nil)
+    (add-hook 'lisp-mode-hook 'slime-lisp-mode-hook)
+    (eval-after-load quicklisp-slime-helper-path
+      (lambda () (setq inferior-lisp-program "sbcl")))))
 
 ;; (defun slem ()
 ;;   (interactive)

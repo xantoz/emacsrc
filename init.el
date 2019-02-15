@@ -15,6 +15,7 @@
     (package-refresh-contents)
     (package-install 'use-package)))
 (require 'use-package)
+(setq use-package-verbose t)
 
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)

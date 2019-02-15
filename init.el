@@ -151,7 +151,7 @@
 (when (require 'helm nil t)
   (global-set-key (kbd "C-?") 'helm-semantic-or-imenu))
 
-(when (and (require 'imenu-anywhere nil t))
+(when (require 'imenu-anywhere nil t)
   (cond ((or (featurep 'helm) (require 'helm nil t))
          (global-set-key (kbd "C-.") 'helm-imenu-anywhere)
          (global-set-key (kbd "C-M-.") 'imenu-anywhere))

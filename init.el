@@ -796,6 +796,33 @@ TODO: Should i count-words-tex for regions somehow too?"
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 
+;;;; Magic to show images inline with iimage-mode in eshell
+(defun my/iimage-mode-refresh--eshell/cat (orig-fun &rest args)
+  "Display image when using cat on it."
+  (let ((image-path (cons default-directory iimage-mode-image-search-path)))
+    (dolist (arg args)
+      (let ((imagep nil)
+            file)
+        (with-silent-modifications
+          (save-excursion
+            (dolist (pair iimage-mode-image-regex-alist)
+              (when (and (not imagep)
+                         (string-match (car pair) arg)
+                         (setq file (match-string (cdr pair) arg))
+                         (setq file (locate-file file image-path)))
+                (setq imagep t)
+                (add-text-properties 0 (length arg)
+                                     `(display ,(create-image file)
+                                               modification-hooks
+                                               (iimage-modification-hook))
+                                     arg)
+                (eshell-buffered-print arg)
+                (eshell-flush)))))
+        (when (not imagep)
+          (apply orig-fun (list arg)))))
+    (eshell-flush)))
+(advice-add 'eshell/cat :around #'my/iimage-mode-refresh--eshell/cat)
+
 ;;;; stuff from etu's conf (migrate your own stuff to use use-package in the future)
 (when nil
   (use-package php-mode

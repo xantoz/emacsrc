@@ -84,7 +84,6 @@
  "~/.config/emacs/elisp/"
  "~/.config/emacs/vendor-elisp/"
  "~/.config/emacs/nix-mode/"
- "~/.config/emacs/emacs-libvterm/"
  "~/.elisp/")
 
 (use-package nix-mode
@@ -96,8 +95,10 @@
   :defer 1
   :config (setq etags-table-search-up-depth 99))
 
-(use-package vterm
-  :commands vterm vterm-other-window)
+(when (or i-am-colgate)
+  (maybe-add-to-load-path "~/.config/emacs/emacs-libvterm/")
+  (use-package vterm
+    :commands vterm vterm-other-window))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

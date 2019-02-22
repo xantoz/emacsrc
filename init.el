@@ -52,7 +52,6 @@
 
 (if (featurep 'tex-site) (unload-feature 'tex-site t))
 
-
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds
 (defun my-dired-copy-filename-as-kill (&optional arg)
@@ -893,6 +892,13 @@ TODO: Should i count-words-tex for regions somehow too?"
          ("<C-S-right>" . buf-move-right)))
 ;;;; END Frame management
 
+;; I prefer to view ebuilds with 8 space-sized tabs
+(add-hook 'ebuild-mode-hook
+          #'(lambda ()
+              (setq tab-width 8
+                    sh-basic-offset 8))
+          t)
+
 (eval-after-load 'magit
   '(setq magit-log-margin
          ;; '(t "%Y-%m-%d %H:%M:%S" magit-log-margin-width t 18)
@@ -910,7 +916,8 @@ TODO: Should i count-words-tex for regions somehow too?"
              lisp-mode-hook
              shell-mode-hook
              asm-mode-hook
-             web-mode-hook))
+             web-mode-hook
+             ebuild-mode-hook))
   (add-hook i (lambda () (whitespace-mode 1)) t))
 
 ;; Make emacs stop whining about setting this in .dir-locals

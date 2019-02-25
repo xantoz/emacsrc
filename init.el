@@ -117,15 +117,14 @@
 
 ;; Exchange contents of windows
 (use-package ag
-  :defer 1
-  :config
-  (progn
-    (defun ag-case (&rest args)
-      "ag, but with case sensitivity"
-      (interactive (advice-eval-interactive-spec
-                    (cadr (interactive-form #'ag))))
-      (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
-        (apply #'ag args)))))
+  :defer t
+  :init (progn
+          (defun ag-case (&rest args)
+            "ag, but with case sensitivity"
+            (interactive (advice-eval-interactive-spec
+                          (cadr (interactive-form #'ag))))
+            (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
+              (apply #'ag args)))))
 
 ;; Mute these
 (dolist (i '(XF86AudioMute

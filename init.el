@@ -145,7 +145,9 @@
 (global-set-key (kbd "C-x t") 'transpose-lines)
 
 ;; find-file-in-project
-(global-set-key (kbd "C-x C-M-f") 'find-file-in-project)
+(use-package find-file-in-project
+  :defer t
+  :bind ("C-x C-M-f" . find-file-in-project))
 
 ;; pop mark
 (global-set-key (kbd "C-,") (lambda () (interactive) (set-mark-command "")))

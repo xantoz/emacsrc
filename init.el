@@ -899,6 +899,11 @@ TODO: Should i count-words-tex for regions somehow too?"
                     sh-basic-offset 8))
           t)
 
+(use-package gnuplot
+  :defer t
+  :commands gnuplot-mode gnuplot-make-buffer
+  :mode ("\\.gp" . gnuplot-mode))
+
 (use-package magit
   :defer t
   :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))

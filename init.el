@@ -43,6 +43,7 @@
 (defconst i-am-kombu      (string-prefix-p "kombu" (system-name)))
 (defconst i-am-cirno      (string-prefix-p "cirno" (system-name)))
 (defconst i-am-nazrin     (string-prefix-p "nazrin" (system-name)))
+(defconst i-am-usbee      (string-prefix-p "usbee" (system-name)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno))
@@ -94,7 +95,7 @@
   :defer 1
   :config (setq etags-table-search-up-depth 99))
 
-(when (or i-am-colgate)
+(when (or i-am-colgate i-am-usbee)
   (maybe-add-to-load-path "~/.config/emacs/emacs-libvterm/")
   (use-package vterm
     :commands vterm vterm-other-window))

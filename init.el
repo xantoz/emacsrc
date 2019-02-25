@@ -899,12 +899,9 @@ TODO: Should i count-words-tex for regions somehow too?"
                     sh-basic-offset 8))
           t)
 
-(eval-after-load 'magit
-  '(setq magit-log-margin
-         ;; '(t "%Y-%m-%d %H:%M:%S" magit-log-margin-width t 18)
-         '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)
-         ;; '(t "%x %X" magit-log-margin-width t 18)
-         ))
+(use-package magit
+  :defer t
+  :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))
 
 (column-number-mode 1)
 

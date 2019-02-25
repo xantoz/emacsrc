@@ -150,6 +150,8 @@
 ;; pop mark
 (global-set-key (kbd "C-,") (lambda () (interactive) (set-mark-command "")))
 
+(use-package xcscope :defer t)
+
 (when (require 'helm nil t)
   (global-set-key (kbd "C-?") 'helm-semantic-or-imenu))
 
@@ -897,6 +899,9 @@ TODO: Should i count-words-tex for regions somehow too?"
               (setq tab-width 8
                     sh-basic-offset 8))
           t)
+
+(use-package lua-mode :defer t)
+(use-package markdown-mode :defer t)
 
 (use-package gnuplot
   :defer t

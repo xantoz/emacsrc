@@ -115,7 +115,6 @@
   ;; (scroll-bar-mode -1)
   )
 
-;; Exchange contents of windows
 (use-package ag
   :defer t
   :init (progn

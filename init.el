@@ -141,7 +141,7 @@
   :bind (("<f9>" . crosshairs-flash)
          ("C-<f9>" . crosshairs-mode)))
 
-;; C-x C-t crashes badly with ratpoison defaults. C-x t seems to be free, so use that instead
+;; C-x C-t clashes badly with ratpoison defaults. C-x t seems to be free, so use that instead
 (global-set-key (kbd "C-x t") 'transpose-lines)
 
 ;; find-file-in-project

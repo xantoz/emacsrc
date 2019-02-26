@@ -91,6 +91,7 @@
  (relative-path "elisp/")
  (relative-path "vendor-elisp/")
  (relative-path "nix-mode/")
+ (relative-path "nix-update-el/")
  "~/.elisp/")
 
 (use-package nix-mode

@@ -826,6 +826,7 @@ TODO: Should i count-words-tex for regions somehow too?"
           (apply orig-fun (list arg)))))
     (eshell-flush)))
 (advice-add 'eshell/cat :around #'my/iimage-mode-refresh--eshell/cat)
+(add-hook 'eshell-mode-hook #'iimage-mode)
 
 ;;;; stuff from etu's conf (migrate your own stuff to use use-package in the future)
 (when nil

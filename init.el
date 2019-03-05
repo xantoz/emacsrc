@@ -124,7 +124,8 @@
             (interactive (advice-eval-interactive-spec
                           (cadr (interactive-form #'ag))))
             (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
-              (apply #'ag args)))))
+              (apply #'ag args))))
+  (use-package wgrep-ag))
 
 ;; Mute these
 (dolist (i '(XF86AudioMute

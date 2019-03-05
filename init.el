@@ -947,6 +947,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (when (>= emacs-major-version 26)
   (setq semantic-imenu-index-directory t))
 
+(setq large-file-warning-threshold (* 10000000 5))
 
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

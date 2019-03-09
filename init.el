@@ -918,6 +918,12 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (use-package lua-mode :ensure t :defer t)
 (use-package rust-mode :ensure t :defer t)
+(use-package qml-mode :ensure t :defer t)
+(use-package js2-mode :ensure t :defer t)
+(use-package yaml-mode :ensure t :defer t)
+(use-package go-mode :ensure t :defer t)
+(use-package markdown-mode :ensure t :defer t)
+
 
 (use-package gnuplot
   :defer t

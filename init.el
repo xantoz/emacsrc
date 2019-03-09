@@ -17,6 +17,16 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+;; wrap use-package so that it ignores :ensure
+(defun up-plist-remove (plist prop)
+  (cond ((null plist) nil)
+        ((eq (car plist) prop) (cddr plist))
+        (t (cons (car plist) (up-plist-remove (cdr plist) prop)))))
+(setf (symbol-function '%old-use-package) (symbol-function 'use-package))
+(defmacro use-package (&rest args)
+  (let ((no-ensure (up-plist-remove args :ensure)))
+    `(%old-use-package ,@no-ensure)))
+
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)
 ;; (add-hook 'haskell-mode-hook (lambda () (ghc-init)))
@@ -118,14 +128,15 @@
 
 (use-package ag
   :defer t
-  :init (progn
-          (defun ag-case (&rest args)
-            "ag, but with case sensitivity"
-            (interactive (advice-eval-interactive-spec
-                          (cadr (interactive-form #'ag))))
-            (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
-              (apply #'ag args)))
-          (use-package wgrep-ag)))
+  :ensure t
+  :config (use-package wgrep-ag :ensure t)
+  :init
+  (defun ag-case (&rest args)
+    "ag, but with case sensitivity"
+    (interactive (advice-eval-interactive-spec
+                  (cadr (interactive-form #'ag))))
+    (let ((ag-arguments (cons "--case-sensitive" (remove "--smart-case" ag-arguments))))
+      (apply #'ag args))))
 
 ;; Mute these
 (dolist (i '(XF86AudioMute
@@ -147,6 +158,7 @@
 
 ;; find-file-in-project
 (use-package find-file-in-project
+  :ensure t
   :defer t
   :bind ("C-x C-M-f" . find-file-in-project))
 
@@ -904,8 +916,8 @@ TODO: Should i count-words-tex for regions somehow too?"
                     sh-basic-offset 8))
           t)
 
-(use-package lua-mode :defer t)
-(use-package markdown-mode :defer t)
+(use-package lua-mode :ensure t :defer t)
+(use-package rust-mode :ensure t :defer t)
 
 (use-package gnuplot
   :defer t
@@ -913,6 +925,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :mode ("\\.gp" . gnuplot-mode))
 
 (use-package magit
+  :ensure t
   :defer t
   :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))
 

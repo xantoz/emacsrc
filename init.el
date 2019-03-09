@@ -924,6 +924,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package go-mode :ensure t :defer t)
 (use-package markdown-mode :ensure t :defer t)
 
+(use-package webpaste :ensure t :defer t)
 
 (use-package gnuplot
   :defer t

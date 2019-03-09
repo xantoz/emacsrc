@@ -1,4 +1,7 @@
-;; run like: "emacs ~/.config/emacs/init.el --no-site-file --batch -l ~/.config/emacs/scripts/use-package-extract.el -f print-packages 2>&1"
+;; -*- lexical-binding: t -*-
+
+;; to list packages:    "emacs ~/.config/emacs/init.el --no-site-file --batch -l ~/.config/emacs/scripts/use-package-extract.el -f print-packages 2>&1"
+;; to install packages: "emacs ~/.config/emacs/init.el --no-site-file --batch -l ~/.config/emacs/scripts/use-package-extract.el -f install-packages 2>&1"
 
 (defun upe-list-until (predicate list)
   (cond ((null list) nil)
@@ -46,3 +49,14 @@
 (defun print-packages ()
   (dolist (element (upe-walk (read-current-buffer)))
     (message (symbol-name element))))
+
+(let ((package-settings-path (expand-file-name "../package-settings.el" (file-name-directory load-file-name))))
+  (defun install-packages ()
+    (defvar user-init-file)
+    (defvar custom-file)
+    ;; trick package-install into writing into the customization file
+    (let ((user-init-file "~/.emacs")
+          (custom-file "~/.emacs-custom"))
+      (load package-settings-path)
+      (dolist (package-name (upe-walk (read-current-buffer)))
+        (package-install package-name nil)))))

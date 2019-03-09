@@ -1,14 +1,11 @@
 (require 'cl)                           ; I like extra bloat!
 
-(when (>= emacs-major-version 24)
-  (require 'package)
+(defun load-file-relative (name)
+  "Load a file using a path relative to the current file"
+  (load (expand-file-name name (file-name-directory load-file-name))))
 
-  (setq package-archives '(("ELPA" . "https://tromey.com/elpa/")
-                           ("gnu" . "https://elpa.gnu.org/packages/")
-                           ("melpa" . "https://stable.melpa.org/packages/")))
-  (package-initialize)
-  (when (not package-archive-contents)
-    (package-refresh-contents)))
+(when (>= emacs-major-version 24)
+  (load-file-relative "package-settings.el"))
 
 (unless (package-installed-p 'use-package)
   (progn

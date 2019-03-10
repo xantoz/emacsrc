@@ -4,3 +4,6 @@
 [submodule "emacs-libvterm"]
 	path = emacs-libvterm
 	url = https://github.com/akermu/emacs-libvterm.git
+[submodule "scripts/nix-emacs-with-use-package-pkgs"]
+	path = scripts/nix-emacs-with-use-package-pkgs
+	url = git@github.com:talyz/nix-emacs-with-use-package-pkgs

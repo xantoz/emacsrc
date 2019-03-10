@@ -1,11 +1,11 @@
 (require 'cl)                           ; I like extra bloat!
 
-(defun load-file-relative (name)
-  "Load a file using a path relative to the current file"
-  (load (expand-file-name name (file-name-directory load-file-name))))
+;; only really works during load-time
+(defun relative-path (path)
+  (expand-file-name path (file-name-directory load-file-name)))
 
 (when (>= emacs-major-version 24)
-  (load-file-relative "package-settings.el"))
+  (load (relative-path "package-settings.el")))
 
 (unless (package-installed-p 'use-package)
   (progn
@@ -88,9 +88,9 @@
       (add-to-list 'load-path ele))))
 
 (maybe-add-to-load-path
- "~/.config/emacs/elisp/"
- "~/.config/emacs/vendor-elisp/"
- "~/.config/emacs/nix-mode/"
+ (relative-path "elisp/")
+ (relative-path "vendor-elisp/")
+ (relative-path "nix-mode/")
  "~/.elisp/")
 
 (use-package nix-mode
@@ -103,7 +103,7 @@
   :config (setq etags-table-search-up-depth 99))
 
 (when (or i-am-colgate i-am-usbee)
-  (maybe-add-to-load-path "~/.config/emacs/emacs-libvterm/")
+  (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window))
 

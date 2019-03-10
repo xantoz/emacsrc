@@ -1,3 +1,4 @@
 #!/bin/sh
+cd "$(dirname "$(realpath "$0")")"
 
-exec emacs ~/.config/emacs/init.el --no-site-file --batch -l ~/.config/emacs/scripts/use-package-extract.el -f print-packages 2>&1
+exec emacs ../init.el --no-site-file --script use-package-extract.el -f print-packages 2>&1

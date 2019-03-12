@@ -204,9 +204,6 @@
 (require 'paren) (show-paren-mode t)               ;; will highlight matching parentheses next to cursor.
 (setq-default indent-tabs-mode nil)                ;; will introduce spaces instead of tabs by default.
 
-;; (setq default-tab-width 4)              ;Make tab-only-indented code look sane (but code where it's mixed looks insane)
-
-
 (transient-mark-mode t)              ;; will highlight region between point and mark.
 (setq query-replace-highlight t)     ;; will highlight during query.
 (setq search-highlight t)            ;; highlight incremental search

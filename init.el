@@ -163,8 +163,6 @@
 ;; pop mark
 (global-set-key (kbd "C-,") (lambda () (interactive) (set-mark-command "")))
 
-(use-package xcscope :defer t)
-
 (when (require 'helm nil t)
   (global-set-key (kbd "C-?") 'helm-semantic-or-imenu))
 
@@ -262,7 +260,9 @@
 ; that you don't need to keep using TAB to align yourself when coding.
 (global-set-key "\C-m" 'newline-and-indent)
 
-(when (require 'xcscope nil t)
+(use-package xcscope
+  :defer t
+  :config
   (when (fboundp 'cscope-setup)         ;some versions of xcscope do not have the cscope-setup function
     (cscope-setup))
   (add-hook 'python-mode-hook (function cscope-minor-mode))

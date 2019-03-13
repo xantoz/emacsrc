@@ -262,6 +262,7 @@
 
 (use-package xcscope
   :defer t
+  :ensure t
   :config
   (when (fboundp 'cscope-setup)         ;some versions of xcscope do not have the cscope-setup function
     (cscope-setup))

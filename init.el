@@ -941,7 +941,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (dolist (i '(c-mode-common-hook
              makefile-mode-hook
              lisp-mode-hook
-             shell-mode-hook
+             sh-mode-hook
              asm-mode-hook
              web-mode-hook
              ebuild-mode-hook))

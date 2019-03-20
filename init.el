@@ -943,6 +943,11 @@ TODO: Should i count-words-tex for regions somehow too?"
   :defer t
   :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))
 
+(use-package swiper
+  :ensure t
+  :defer t
+  :bind (("s-s" . swiper)))
+
 (column-number-mode 1)
 
 (require 'whitespace)

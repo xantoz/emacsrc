@@ -926,6 +926,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package meson-mode :ensure t :defer t)
 
 (use-package pdf-tools
+  :if (not i-am-headless-server)
   :ensure t
   :defer 2
   :config (pdf-tools-install t))

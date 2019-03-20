@@ -1,5 +1,4 @@
 (require 'cl)                           ; I like extra bloat!
-
 ;; only really works during load-time
 (defun relative-path (path)
   (expand-file-name path (file-name-directory load-file-name)))
@@ -15,13 +14,19 @@
 (setq use-package-verbose t)
 
 ;; wrap use-package so that it ignores :ensure
-(defun up-plist-remove (plist prop)
-  (cond ((null plist) nil)
-        ((eq (car plist) prop) (cddr plist))
-        (t (cons (car plist) (up-plist-remove (cdr plist) prop)))))
+(defun up-parameter-skip-to-keyword (list)
+  (cond ((endp list) nil)
+        ((keywordp (car list)) list)
+        (t (up-parameter-skip-to-keyword (cdr list)))))
+
+(defun up-parameter-remove (list key)
+  (cond ((endp list) nil)
+        ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
+        (t (cons (car list) (up-parameter-remove (cdr list) key)))))
+
 (setf (symbol-function '%old-use-package) (symbol-function 'use-package))
 (defmacro use-package (&rest args)
-  (let ((no-ensure (up-plist-remove args :ensure)))
+  (let ((no-ensure (up-parameter-remove args :ensure)))
     `(%old-use-package ,@no-ensure)))
 
 ;; (autoload 'ghc-init "ghc" nil t)
@@ -54,7 +59,6 @@
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno))
-
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
 

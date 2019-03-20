@@ -923,7 +923,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (use-package pdf-tools
   :ensure t
-  :init (pdf-tools-install))
+  :defer 2
+  :config (pdf-tools-install t))
 
 (use-package webpaste :ensure t :defer t)
 

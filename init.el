@@ -921,6 +921,10 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package markdown-mode :ensure t :defer t)
 (use-package meson-mode :ensure t :defer t)
 
+(use-package pdf-tools
+  :ensure t
+  :init (pdf-tools-install))
+
 (use-package webpaste :ensure t :defer t)
 
 (use-package gnuplot

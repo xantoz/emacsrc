@@ -56,8 +56,9 @@
 (defconst i-am-cirno      (string-prefix-p "cirno" (system-name)))
 (defconst i-am-nazrin     (string-prefix-p "nazrin" (system-name)))
 (defconst i-am-usbee      (string-prefix-p "usbee" (system-name)))
+(defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
 
-(defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu))
+(defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno))
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))

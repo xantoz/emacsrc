@@ -928,8 +928,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package pdf-tools
   :if (not i-am-headless-server)
   :ensure t
-  :defer 2
-  :config (pdf-tools-install t))
+  :defer t
+  :init (when (fboundp 'pdf-loader-install) (pdf-loader-install t t)))
 
 (use-package webpaste :ensure t :defer t)
 

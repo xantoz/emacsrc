@@ -17,6 +17,6 @@
           (custom-file "~/.emacs-custom"))
       (load package-settings-path)
       (package-refresh-contents)
-      (package-install 'use-package)    ; we will need use-package, which is not configured using use-package
+      (package-install 'use-package nil)    ; we will need use-package, which is not configured using use-package
       (dolist (package-name (upe-walk (read-current-buffer)))
         (package-install package-name nil)))))

@@ -898,16 +898,29 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 ;; Make window switching a little easier. C-x-o is a pain.
 ;; Default keybindings are the arrow keys shifted
-(windmove-default-keybindings)
+(use-package windmove
+  :defer t
+  :bind (("<S-up>"    . windmove-up)
+         ("<S-down>"  . windmove-down)
+         ("<S-left>"  . windmove-left)
+         ("<S-right>" . windmove-right)
+         ("M-s-i"     . windmove-up)
+         ("M-s-k"     . windmove-down)
+         ("M-s-j"     . windmove-left)
+         ("M-s-l"     . windmove-right)))
 
 ;; Exchange contents of windows
 (use-package buffer-move
   :ensure t
   :defer t
-  :bind (("<C-S-up>" . buf-move-up)
-         ("<C-S-down>" . buf-move-down)
-         ("<C-S-left>" . buf-move-left)
-         ("<C-S-right>" . buf-move-right)))
+  :bind (("<C-S-up>"    . buf-move-up)
+         ("<C-S-down>"  . buf-move-down)
+         ("<C-S-left>"  . buf-move-left)
+         ("<C-S-right>" . buf-move-right)
+         ("C-M-s-i"     . buf-move-up)
+         ("C-M-s-k"     . buf-move-down)
+         ("C-M-s-j"     . buf-move-left)
+         ("C-M-s-l"     . buf-move-right)))
 ;;;; END Frame management
 
 ;; I prefer to view ebuilds with 8 space-sized tabs

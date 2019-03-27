@@ -964,18 +964,21 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (column-number-mode 1)
 
-(require 'whitespace)
-(setq whitespace-style '(face tabs trailing empty lines-tail))
-(setq whitespace-line-column nil)       ; Honor fill column
-(dolist (i '(c-mode-common-hook
-             makefile-mode-hook
-             lisp-mode-hook
-             sh-mode-hook
-             asm-mode-hook
-             web-mode-hook
-             ebuild-mode-hook
-             nix-mode-hook))
-  (add-hook i (lambda () (whitespace-mode 1)) t))
+(use-package whitespace
+  :defer t
+  :config
+  (setq whitespace-line-column nil      ; Honor fill column
+        whitespace-style '(face tabs trailing empty lines-tail))
+  :init
+  (dolist (i '(c-mode-common-hook
+               makefile-mode-hook
+               lisp-mode-hook
+               sh-mode-hook
+               asm-mode-hook
+               web-mode-hook
+               ebuild-mode-hook
+               nix-mode-hook))
+    (add-hook i (lambda () (whitespace-mode 1)) t)))
 
 ;; Make emacs stop whining about setting this in .dir-locals
 (put 'cscope-initial-directory      'safe-local-variable t)

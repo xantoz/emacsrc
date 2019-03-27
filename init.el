@@ -973,7 +973,8 @@ TODO: Should i count-words-tex for regions somehow too?"
              sh-mode-hook
              asm-mode-hook
              web-mode-hook
-             ebuild-mode-hook))
+             ebuild-mode-hook
+             nix-mode-hook))
   (add-hook i (lambda () (whitespace-mode 1)) t))
 
 ;; Make emacs stop whining about setting this in .dir-locals

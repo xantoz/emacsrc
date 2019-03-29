@@ -273,11 +273,11 @@
 (use-package xcscope
   :defer t
   :ensure t
-  :config
-  (when (fboundp 'cscope-setup)         ;some versions of xcscope do not have the cscope-setup function
-    (cscope-setup))
+  :init
+  (add-hook 'c-mode-hook (function cscope-minor-mode))
+  (add-hook 'c++-mode-hook (function cscope-minor-mode))
+  (add-hook 'dired-mode-hook (function cscope-minor-mode))
   (add-hook 'python-mode-hook (function cscope-minor-mode))
-  ;(add-hook 'php-mode-hook (function cscope-minor-mode))  ;; actually unneccesary since php is a c-mode derivative
   (add-hook 'web-mode-hook (function cscope-minor-mode)))
 
 ;; give helm-cscope-mode some bindings so it's actually useful

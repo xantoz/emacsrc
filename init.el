@@ -104,6 +104,11 @@
   :mode ("\\.nix" . nix-mode)
   :config (setq nix-indent-function #'nix-indent-line))
 
+(use-package ratpoison
+  :defer t
+  :commands ratpoisonrc-mode
+  :mode (".ratpoisonrc" . ratpoisonrc-mode))
+
 (use-package etags-table
   :defer 1
   :config (setq etags-table-search-up-depth 99))

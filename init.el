@@ -65,6 +65,7 @@
 
 (if (featurep 'tex-site) (unload-feature 'tex-site t))
 
+;;;; DIRED
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds
 (defun my-dired-copy-filename-as-kill (&optional arg)
@@ -78,11 +79,12 @@
 (add-hook 'dired-load-hook
           #'(lambda ()
               (load "dired-x")
-              (setq dired-guess-shell-alist-user '(("\\.eps\\'" "atril &") ("\\.pdf\\'" "atril &") ("\\.csv\\'" "csv-pretty") ("\\.csv.gz\\'" "zcat * | csv-pretty")))))
+              (setq dired-guess-shell-alist-user '(("\\.eps\\'" "atril &") ("\\.pdf\\'" "atril &") ("\\.csv\\'" "csv-pretty") ("\\.csv.gz\\'" "zcat * | csv-pretty")))
+              (setq dired-dwim-target t)))
 (add-hook 'dired-mode-hook
           #'(lambda ()
               (local-set-key "w" 'my-dired-copy-filename-as-kill)))
-
+;;;; END DIRED
 
 ;; Add extra things to load path if they exist (mostly obsolete now
 ;; with packages, but I still have some modules installed this way on

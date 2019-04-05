@@ -855,6 +855,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (put 'downcase-region 'disabled nil)
 (put 'erase-buffer 'disabled nil)
 
+;; TODO: fix for cat foo*
+(when nil
 ;;;; Magic to show images inline with iimage-mode in eshell
 (defun my/iimage-mode-refresh--eshell/cat (orig-fun &rest args)
   "Display image when using cat on it."
@@ -882,6 +884,7 @@ TODO: Should i count-words-tex for regions somehow too?"
     (eshell-flush)))
 (advice-add 'eshell/cat :around #'my/iimage-mode-refresh--eshell/cat)
 (add-hook 'eshell-mode-hook #'iimage-mode)
+)
 
 ;;;; stuff from etu's conf (migrate your own stuff to use use-package in the future)
 (when nil

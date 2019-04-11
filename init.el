@@ -939,7 +939,9 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 ;;;; Window management
 ;; winner-mode (undo) (C-x left, C-x right)
-(winner-mode 1)
+(use-package winner
+  :defer 1
+  :config (winner-mode 1))
 
 ;; Make window switching a little easier. C-x-o is a pain.
 ;; Default keybindings are the arrow keys shifted

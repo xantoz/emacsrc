@@ -304,7 +304,8 @@ If SELECT is non-nil, select the target window."
               (setq c-basic-offset 4)
               (local-set-key (kbd "C-c C-h") 'c-toggle-hungry-state)
               (local-set-key [(control tab)]     ; move to next tempo mark
-                             'tempo-forward-mark)))
+                             'tempo-forward-mark)
+              (linum-mode)))
 
 ; Make Emacs use "newline-and-indent" when you hit the Enter key so
 ; that you don't need to keep using TAB to align yourself when coding.

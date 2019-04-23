@@ -221,25 +221,28 @@
         (inhibit-same-window . t)))
 
 ;; Have to fix xref--pop-to-location behavior for frames
-(defun xref--pop-to-location (item &optional action)
-  "Go to the location of ITEM and display the buffer.
+(use-package xref
+  :defer t
+  :config
+  (defun xref--pop-to-location (item &optional action)
+    "Go to the location of ITEM and display the buffer.
 ACTION controls how the buffer is displayed:
   nil      -- switch-to-buffer
   `window' -- pop-to-buffer (other window)
   `frame'  -- pop-to-buffer (other frame)
 If SELECT is non-nil, select the target window."
-  (let* ((marker (save-excursion
-                   (xref-location-marker (xref-item-location item))))
-         (buf (marker-buffer marker)))
-    (cl-ecase action
-      ((nil)  (switch-to-buffer buf))
-      (window (pop-to-buffer buf t))
-      (frame  (pop-to-buffer buf display-buffer--other-frame-action))
-      ;; (frame  (switch-to-buffer-other-frame buf))
-      )
-    (xref--goto-char marker))
-  (let ((xref--current-item item))
-    (run-hooks 'xref-after-jump-hook)))
+    (let* ((marker (save-excursion
+                     (xref-location-marker (xref-item-location item))))
+           (buf (marker-buffer marker)))
+      (cl-ecase action
+        ((nil)  (switch-to-buffer buf))
+        (window (pop-to-buffer buf t))
+        (frame  (pop-to-buffer buf display-buffer--other-frame-action))
+        ;; (frame  (switch-to-buffer-other-frame buf))
+        )
+      (xref--goto-char marker))
+    (let ((xref--current-item item))
+      (run-hooks 'xref-after-jump-hook))))
 
 (setq require-final-newline t)		;; will make the last line end in a carriage return
 (fset 'yes-or-no-p 'y-or-n-p)		;; will allow you to type just "y" instead of "yes" when you exit.

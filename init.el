@@ -625,6 +625,11 @@ Graphical browsers only."
   (require 'rudel-obby)
   (global-rudel-minor-mode))
 
+(defun add-to-initial-and-default-frame-alist (&rest alist)
+  (dolist (acons alist)
+    (add-to-list 'initial-frame-alist acons)
+    (add-to-list 'default-frame-alist acons)))
+
 ;;;; Font settings (applicable on some systems only)
 (when (> emacs-major-version 21)
   (let ((font (cond
@@ -637,15 +642,16 @@ Graphical browsers only."
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1"))))
     (when font
-      (add-to-list 'default-frame-alist (cons 'font font)))))
+      (add-to-initial-and-default-frame-alist (cons 'font font)))))
 ;;;; END font settings
 
 ;;;; "Night mode" (really sort of my default "theme" with a key to toggle to default black on white for bright days)
 (when (> emacs-major-version 21)
-  (add-to-list 'default-frame-alist (cons 'background-color "gray15"))
-  (add-to-list 'default-frame-alist (cons 'foreground-color "wheat"))
-  (add-to-list 'default-frame-alist (cons 'cursor-color "wheat"))
-  (add-to-list 'default-frame-alist (cons 'night-mode-on t)))
+  (add-to-initial-and-default-frame-alist
+   '(background-color . "gray15")
+   '(foreground-color . "wheat")
+   '(cursor-color . "wheat")
+   '(night-mode-on . t)))
 
 (when (featurep 'x)
   (defun night-mode ()

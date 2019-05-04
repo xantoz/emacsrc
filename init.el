@@ -994,6 +994,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package go-mode :ensure t :defer t)
 (use-package markdown-mode :ensure t :defer t)
 (use-package meson-mode :ensure t :defer t)
+(use-package fill-column-indicator :ensure t :defer t)
 
 (use-package pdf-tools
   :if (not i-am-headless-server)

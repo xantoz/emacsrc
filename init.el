@@ -290,8 +290,7 @@ If SELECT is non-nil, select the target window."
 (add-hook 'c-mode-common-hook
           #'(lambda ()
               (turn-on-auto-fill)
-              ;; (setq fill-column 128)
-              (setq fill-column 96)
+              (setq fill-column 80)
               (setq comment-column 60)
               ;; (modify-syntax-entry ?_ "w")       ; now '_' is not considered a word-delimiter
               (if (or (> emacs-major-version 23) (and (= emacs-major-version 23) (>= emacs-minor-version 2))) ; For studlyCaps, use (c-subword-mode 1) in your mode setup: makes some movement and text commands recognize case-change as a word boundary

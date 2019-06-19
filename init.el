@@ -97,13 +97,13 @@
 (maybe-add-to-load-path
  (relative-path "elisp/")
  (relative-path "vendor-elisp/")
- (relative-path "nix-mode/")
  (relative-path "nix-update-el/")
  "~/.elisp/")
 
+(use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
 (use-package nix-mode
-  :commands nix-mode
-  :mode ("\\.nix" . nix-mode)
+  :ensure t
+  :defer t
   :config (setq nix-indent-function #'nix-indent-line))
 
 (use-package ratpoison

@@ -1066,5 +1066,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (setq large-file-warning-threshold (* 10000000 5))
 
+(setq wdired-allow-to-change-permissions t)
+
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

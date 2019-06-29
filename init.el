@@ -220,6 +220,12 @@
         ;; (frame-predicate . (lambda (frame) (eq t (frame-visible-p frame))))
         (inhibit-same-window . t)))
 
+;; ediff setup
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function (if (> (frame-width) 150)
+                                      'split-window-horizontally
+                                    'split-window-vertically))
+
 ;; Have to fix xref--pop-to-location behavior for frames
 (use-package xref
   :defer t

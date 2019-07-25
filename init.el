@@ -1018,7 +1018,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (use-package magit
   :ensure t
-  :defer t
+  :defer 1
   :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))
 
 (use-package swiper

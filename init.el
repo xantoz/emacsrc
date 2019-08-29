@@ -1045,6 +1045,12 @@ TODO: Should i count-words-tex for regions somehow too?"
                nix-mode-hook))
     (add-hook i (lambda () (whitespace-mode 1)) t)))
 
+(use-package bookmark
+  :defer t
+  :config
+  ;; save bookmarks every time
+  (setq bookmark-save-flag 1))
+
 ;; Make emacs stop whining about setting this in .dir-locals
 (put 'cscope-initial-directory      'safe-local-variable t)
 (put 'python-indent                 'safe-local-variable t)

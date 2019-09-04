@@ -121,7 +121,8 @@
     :commands vterm vterm-other-window
     :config (progn
               (set-face-foreground 'vterm-color-default "white")
-              (set-face-background 'vterm-color-default "black"))))
+              (set-face-background 'vterm-color-default "black")
+              (set-face-foreground 'term-color-blue "#5c5cff"))))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)
@@ -132,7 +133,6 @@
 
 
 (setq inhibit-startup-screen t)
-
 
 (when (featurep 'x)
   (tool-bar-mode -1)

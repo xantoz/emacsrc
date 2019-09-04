@@ -118,7 +118,10 @@
 (when (or i-am-colgate i-am-usbee)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
-    :commands vterm vterm-other-window))
+    :commands vterm vterm-other-window
+    :config (progn
+              (set-face-foreground 'vterm-color-default "white")
+              (set-face-background 'vterm-color-default "black"))))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

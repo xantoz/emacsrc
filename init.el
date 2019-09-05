@@ -122,7 +122,10 @@
     :config (progn
               (set-face-foreground 'vterm-color-default "white")
               (set-face-background 'vterm-color-default "black")
-              (set-face-foreground 'term-color-blue "#5c5cff"))))
+              (set-face-foreground 'term-color-blue "#5c5cff")
+              ;; seems like cua-mode is interfering with vterms remaping of yank and yank-pop
+              (define-key vterm-mode-map (kbd "C-y") #'vterm-yank)
+              (define-key vterm-mode-map (kbd "M-y") #'vterm-yank-pop))))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

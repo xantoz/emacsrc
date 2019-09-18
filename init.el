@@ -173,6 +173,12 @@
 (global-set-key (kbd "C-x t") 'transpose-lines)
 
 ;; find-file-in-project
+;; TODO: bindings for maybe:
+;;         find-directory-in-project
+;;         find-file-in-current-directory
+;;         Some of the diff-related commands?
+;;      learn to use:
+;;         ffip-create-project-file
 (use-package find-file-in-project
   :ensure t
   :defer t

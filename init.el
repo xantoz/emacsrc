@@ -520,6 +520,9 @@ Graphical browsers only."
           'always-frame
           'samewindow))
 
+(global-set-key (kbd "C-x M-b") #'ivy-switch-buffer)
+(global-set-key (kbd "C-x C-M-b") #'ivy-switch-buffer)
+
 ;;;; image-dired
 (when (featurep 'x)
   (eval-after-load 'image-dired

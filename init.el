@@ -735,6 +735,12 @@ Graphical browsers only."
   "Launches an xterm in the current directory"
   (interactive)
   (start-process "xterm" "nil" "xterm" "-ls"))
+
+(defun decode-hex-string (hex-string)
+  (apply #'concat
+     (loop for i from 0 to (- (/ (length hex-string) 2) 1)
+           for hex-byte = (substring hex-string (* 2 i) (* 2 (+ i 1)))
+           collect (format "%c" (string-to-number hex-byte 16)))))
 ;;;; END
 
 ;;;; this is really crap over from the minijava project

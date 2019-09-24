@@ -1037,6 +1037,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :init (when (fboundp 'pdf-loader-install) (pdf-loader-install t t)))
 
 (use-package webpaste :ensure t :defer t)
+(use-package 0x0 :ensure t :defer t)
 
 (use-package gnuplot
   :defer t

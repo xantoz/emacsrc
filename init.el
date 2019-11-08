@@ -324,6 +324,10 @@ If SELECT is non-nil, select the target window."
                              'tempo-forward-mark)
               (linum-mode)))
 
+(add-hook 'python-mode-hook
+          #'(lambda ()
+              (linum-mode)))
+
 ; Make Emacs use "newline-and-indent" when you hit the Enter key so
 ; that you don't need to keep using TAB to align yourself when coding.
 (global-set-key "\C-m" 'newline-and-indent)

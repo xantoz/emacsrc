@@ -115,7 +115,7 @@
   :defer 1
   :config (setq etags-table-search-up-depth 99))
 
-(when (or i-am-colgate i-am-usbee)
+(when (or i-am-colgate i-am-usbee i-am-nazrin)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window

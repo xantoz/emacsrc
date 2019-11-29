@@ -1030,6 +1030,11 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package dts-mode :ensure t :defer t)
 (use-package dockerfile-mode :ensure t :defer t)
 
+(use-package groovy-mode
+  :ensure t
+  :defer t
+  :config (setq groovy-indent-offset 2))
+
 (use-package intel-hex-mode
   :ensure t
   :defer t

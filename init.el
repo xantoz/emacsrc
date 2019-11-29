@@ -1028,6 +1028,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package cmake-mode :ensure t :defer t)
 (use-package fill-column-indicator :ensure t :defer t)
 (use-package dts-mode :ensure t :defer t)
+(use-package dockerfile-mode :ensure t :defer t)
 
 (use-package intel-hex-mode
   :ensure t

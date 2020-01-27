@@ -1062,7 +1062,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package swiper
   :ensure t
   :defer t
-  :bind (("s-s" . swiper)))
+  :bind (("s-s" . swiper)
+         ("C-S-s" . swiper)))
 
 (column-number-mode 1)
 

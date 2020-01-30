@@ -869,7 +869,8 @@ TODO: Should i count-words-tex for regions somehow too?"
   (cond ((and (not mark-active) (find major-mode '(latex-mode tex-mode))) (count-words-tex))
         (t (call-interactively 'count-words))))
 
-(global-set-key (kbd "\C-x w") 'count-words-dwim)
+;; Commented out because it collides with one prefix for hi-lock-mode
+;(global-set-key (kbd "\C-x w") 'count-words-dwim)
 
 (defun scratch-lisp-file ()
   "Insert a template (with DEFPACKAGE and IN-PACKAGE forms) into

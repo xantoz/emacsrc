@@ -104,7 +104,7 @@
 (use-package nix-mode
   :ensure t
   :defer t
-  :config (setq nix-indent-function #'nix-indent-line))
+  :config (setq nix-indent-function #'smie-indent-line))
 
 (use-package ratpoison
   :defer t

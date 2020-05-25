@@ -1049,6 +1049,7 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (use-package webpaste :ensure t :defer t)
 (use-package 0x0 :ensure t :defer t)
+(use-package ox-gfm :ensure t :defer t)
 
 (use-package gnuplot
   :defer t

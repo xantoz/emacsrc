@@ -5,5 +5,5 @@
 	path = scripts/nix-emacs-with-use-package-pkgs
 	url = git@github.com:talyz/nix-emacs-with-use-package-pkgs
 [submodule "nix-update-el"]
-	path = nix-update-el
+	path = submodule-elisp/nix-update-el
 	url = https://github.com/jwiegley/nix-update-el/

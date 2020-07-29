@@ -97,7 +97,7 @@
 (maybe-add-to-load-path
  (relative-path "elisp/")
  (relative-path "vendor-elisp/")
- (relative-path "nix-update-el/")
+ (relative-path "submodule-elisp/nix-update-el/")
  "~/.elisp/")
 
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...

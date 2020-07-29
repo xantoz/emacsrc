@@ -7,3 +7,6 @@
 [submodule "nix-update-el"]
 	path = submodule-elisp/nix-update-el
 	url = https://github.com/jwiegley/nix-update-el/
+[submodule "submodule-elisp/bitbake-el"]
+	path = submodule-elisp/bitbake-el
+	url = git@github.com:xantoz/bitbake-el

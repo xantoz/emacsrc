@@ -92,12 +92,13 @@
 (defun maybe-add-to-load-path (&rest paths)
   (dolist (ele paths)
     (when (file-directory-p ele)
-      (add-to-list 'load-path ele))))
+      (add-to-list 'load-path (directory-file-name ele)))))
 
 (maybe-add-to-load-path
  (relative-path "elisp/")
  (relative-path "vendor-elisp/")
  (relative-path "submodule-elisp/nix-update-el/")
+ (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
@@ -114,6 +115,9 @@
 (use-package etags-table
   :defer 1
   :config (setq etags-table-search-up-depth 99))
+
+(use-package mmm-mode :ensure t :defer t) ; needed by bitbake-el
+(use-package bitbake :defer 1)
 
 (when (or i-am-colgate i-am-usbee i-am-nazrin)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))

@@ -62,6 +62,8 @@
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
 
+(defconst i-am-graphical (or (featurep 'x) (featurep 'w32)))
+
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
 
 (if (featurep 'tex-site) (unload-feature 'tex-site t))
@@ -149,7 +151,7 @@
 
 (setq inhibit-startup-screen t)
 
-(when (featurep 'x)
+(when i-am-graphical
   (tool-bar-mode -1)
   ;; (scroll-bar-mode -1)
   )
@@ -414,7 +416,7 @@ If SELECT is non-nil, select the target window."
 ;;;; w3m settings
 (eval-after-load 'w3m
   '(progn
-     (if (featurep 'x)
+     (if i-am-graphical
          (setq w3m-default-display-inline-images t
                w3m-use-favicon                   t)
        (setq w3m-default-display-inline-images     nil
@@ -432,7 +434,7 @@ Graphical browsers only."
     (reduce (lambda (a b) (or a b))     ;or ain't a function, can't use it without thunk
             (mapcar #'executable-find browsers))))
 
-(cond ((and (featurep 'x)
+(cond ((and i-am-graphical
             (find-browser))
        (setq browse-url-browser-function 'browse-url-generic
              browse-url-generic-program (find-browser)))
@@ -546,7 +548,7 @@ Graphical browsers only."
 (global-set-key (kbd "C-x C-M-b") #'ivy-switch-buffer)
 
 ;;;; image-dired
-(when (featurep 'x)
+(when i-am-graphical
   (eval-after-load 'image-dired
     '(let ((use-/dev/shm/-? (or i-am-udongein i-am-lain i-am-monad)))
        (setq image-dired-cmd-pngcrush-program         (executable-find "pngcrush")
@@ -690,7 +692,7 @@ Graphical browsers only."
    '(cursor-color . "wheat")
    '(night-mode-on . t)))
 
-(when (featurep 'x)
+(when i-am-graphical
   (defun night-mode ()
     (interactive)
     (set-background-color "gray15")

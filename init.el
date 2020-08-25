@@ -117,7 +117,14 @@
   :config (setq etags-table-search-up-depth 99))
 
 (use-package mmm-mode :ensure t :defer t) ; needed by bitbake-el
-(use-package bitbake :defer 1)
+(use-package bitbake
+  :defer 1
+  :init (progn
+          (add-hook 'mmm-mode-hook (lambda () (whitespace-mode 0)))
+          (add-hook 'mmm-bitbake-mode-hook (lambda () (whitespace-mode 0)))
+          (add-hook 'mmm-python-mode-submode-hook (lambda () (whitespace-mode 0)))
+          (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
+          (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
 (when (or i-am-colgate i-am-usbee i-am-nazrin)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
@@ -1086,7 +1093,8 @@ TODO: Should i count-words-tex for regions somehow too?"
                asm-mode-hook
                web-mode-hook
                ebuild-mode-hook
-               nix-mode-hook))
+               nix-mode-hook
+               bitbake-mode-hook))
     (add-hook i (lambda () (whitespace-mode 1)) t)))
 
 (use-package bookmark

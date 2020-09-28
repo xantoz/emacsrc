@@ -1093,8 +1093,7 @@ TODO: Should i count-words-tex for regions somehow too?"
                asm-mode-hook
                web-mode-hook
                ebuild-mode-hook
-               nix-mode-hook
-               bitbake-mode-hook))
+               nix-mode-hook))
     (add-hook i (lambda () (whitespace-mode 1)) t)))
 
 (use-package bookmark

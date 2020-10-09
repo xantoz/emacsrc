@@ -1118,6 +1118,11 @@ TODO: Should i count-words-tex for regions somehow too?"
 (setq find-name-arg "-iname")           ; I like to search case-insensitively by default
 (setq hanoi-use-faces t)
 
+;; Have org mode display inline preview images scaled appropriately
+;; (when there is an attribute, e.g. `#+attr_org: :width 100px`)
+(setq org-image-actual-width nil)
+
+
 (when (>= emacs-major-version 26)
   (setq semantic-imenu-index-directory t))
 

@@ -44,22 +44,23 @@
 
 ;; Constants to tell which machine we are running on so we can conditionally include code and stuffs
 (defconst i-am-csc-ubuntu (and (eq system-type 'gnu/linux) (string= "csc" (second (split-string (system-name) "\\.")))))
-(defconst i-am-monad (string-prefix-p "monad" (system-name)))
-(defconst i-am-lain (string-prefix-p "lain" (system-name)))
-(defconst i-am-sakuya (string-prefix-p "sakuya" (system-name)))
-(defconst i-am-colgate (string-prefix-p "colgate" (system-name)))
-(defconst i-am-udongein (string-prefix-p "udongein" (system-name)))
-(defconst i-am-suiseiseki (string-prefix-p "suiseiseki.nu" (system-name)))
-(defconst i-am-souseiseki (string-prefix-p "Souseiseki" (system-name)))
-(defconst i-am-patchouli  (string-prefix-p "patchouli" (system-name)))
-(defconst i-am-kombu      (string-prefix-p "kombu" (system-name)))
-(defconst i-am-cirno      (string-prefix-p "cirno" (system-name)))
-(defconst i-am-nazrin     (string-prefix-p "nazrin" (system-name)))
-(defconst i-am-usbee      (string-prefix-p "usbee" (system-name)))
+(defconst i-am-monad         (string-prefix-p "monad" (system-name)))
+(defconst i-am-lain          (string-prefix-p "lain" (system-name)))
+(defconst i-am-sakuya        (string-prefix-p "sakuya" (system-name)))
+(defconst i-am-colgate       (string-prefix-p "colgate" (system-name)))
+(defconst i-am-udongein      (string-prefix-p "udongein" (system-name)))
+(defconst i-am-suiseiseki    (string-prefix-p "suiseiseki.nu" (system-name)))
+(defconst i-am-souseiseki    (string-prefix-p "Souseiseki" (system-name)))
+(defconst i-am-patchouli     (string-prefix-p "patchouli" (system-name)))
+(defconst i-am-kombu         (string-prefix-p "kombu" (system-name)))
+(defconst i-am-cirno         (string-prefix-p "cirno" (system-name)))
+(defconst i-am-nazrin        (string-prefix-p "nazrin" (system-name)))
+(defconst i-am-usbee         (string-prefix-p "usbee" (system-name)))
 (defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
+(defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
-(defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno))
+(defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
 
@@ -675,7 +676,8 @@ Graphical browsers only."
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
-               (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1"))))
+               (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
+               (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))
     (when font
       (add-to-initial-and-default-frame-alist (cons 'font font)))))
 ;;;; END font settings

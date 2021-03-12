@@ -1003,6 +1003,22 @@ TODO: Should i count-words-tex for regions somehow too?"
 ;;;; end etu stuff
   )
 
+(use-package pcsv
+  :ensure t
+  :config (progn
+            (defun csv-tally (file field)
+              (reduce (lambda (a b)
+                        (+ a (string-to-number (nth field b))))
+                      (pcsv-parse-file file)
+                      :initial-value 0))
+
+            (defun csv-average (file field)
+              (let ((csv (pcsv-parse-file file)))
+                (/ (reduce (lambda (a b) (+ a (string-to-number (nth field b))))
+                           csv
+                           :initial-value 0)
+                   (float (length csv)))))))
+
 
 ;;;; Window management
 ;; winner-mode (undo) (C-x left, C-x right)

@@ -719,6 +719,25 @@ Graphical browsers only."
 
 ;;;; BEGIN my hacky functions here
 
+;; inferior recursive version (but much easier to understand)
+(defun list-until-recursive (predicate list)
+  (cond ((eq list nil)                  nil)
+        ((funcall predicate (car list)) nil)
+        (t                              (cons (car list)
+                                              (list-until-recursive predicate (cdr list))))))
+
+;; Using CL style loop
+(defun list-until (predicate list)
+  (loop for x on list
+      collect (first x)
+      until (or (eq (second x) nil)
+                (funcall predicate (second x)))))
+
+;; calculate arithmetic mean of list
+(defun avlis (list)
+  (/ (apply #'+ list)
+     (float (length list))))
+
 ;; Found here: https://www.emacswiki.org/emacs/SortWords
 (defun sort-words (reverse beg end)
   "Sort words in region alphabetically, in REVERSE if negative.
@@ -1018,7 +1037,6 @@ TODO: Should i count-words-tex for regions somehow too?"
                            csv
                            :initial-value 0)
                    (float (length csv)))))))
-
 
 ;;;; Window management
 ;; winner-mode (undo) (C-x left, C-x right)

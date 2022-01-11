@@ -58,6 +58,7 @@
 (defconst i-am-usbee         (string-prefix-p "usbee" (system-name)))
 (defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
 (defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
+(defconst i-am-michiru       (string-prefix-p "michiru" (system-name)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
@@ -677,6 +678,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               ((and i-am-michiru (not (featurep 'w32))) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
                (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))

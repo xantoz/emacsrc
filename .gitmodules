@@ -10,3 +10,6 @@
 [submodule "submodule-elisp/bitbake-el"]
 	path = submodule-elisp/bitbake-el
 	url = git@github.com:xantoz/bitbake-el
+[submodule "submodule-elisp/unity.el"]
+	path = submodule-elisp/unity-el
+	url = https://github.com/elizagamedev/unity.el

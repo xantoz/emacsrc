@@ -63,6 +63,8 @@
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
 
+(defconst i-am-windows (or (eq system-type 'windows-nt) (eq system-type 'cygwin)))
+
 (defconst i-am-graphical (or (featurep 'x) (featurep 'w32)))
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
@@ -104,6 +106,32 @@
  (relative-path "submodule-elisp/nix-update-el/")
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
+
+;; unity.el setup
+;(maybe-add-to-load-path (relative-path "submodule-elisp/unity-el/"))
+(load (relative-path "submodule-elisp/unity-el/unity.el"))
+(when i-am-windows
+  (setq unity-vcvarsall "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat")
+  (setenv "FrameWorkPathOverride" "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.7.1")
+  ;; (setenv "FrameWorkPathOverride" "C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.7.1")
+  )
+;; (add-hook 'after-init-hook #'unity-build-code-shim)
+;; (add-hook 'after-init-hook #'unity-setup)
+
+(use-package lsp-mode
+  :ensure t
+  :bind-keymap
+  ("C-c l" . lsp-command-map)
+  :custom
+  (lsp-keymap-prefix "C-c l"))
+(use-package csharp-mode
+  :ensure t
+  :init
+  (defun my/csharp-mode-hook ()
+    ;; (setq-local lsp-auto-guess-root t)
+    ;; (lsp)
+    )
+  (add-hook 'csharp-mode-hook #'my/csharp-mode-hook))
 
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
 (use-package nix-mode

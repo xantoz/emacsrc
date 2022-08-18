@@ -637,7 +637,7 @@ Graphical browsers only."
      (defun set-prolog-system (system)
        (interactive "Ssystem: ")
        (setq prolog-system system)
-       (setq prolog-program-name (case prolog-system
+       (setq prolog-program-name (cl-case prolog-system
                                    (gnu "gprolog")
                                    (swi "swipl")
                                    (sicstus (cond ((or i-am-monad i-am-udongein) "/usr/local/sicstus4.1.2/bin/sicstus")

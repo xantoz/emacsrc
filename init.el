@@ -1098,7 +1098,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package groovy-mode
   :ensure t
   :defer t
-  :config (setq groovy-indent-offset 2))
+  :config (setq groovy-indent-offset 2
+                auto-mode-alist (acons "[Jj]enkinsfile" #'groovy-mode auto-mode-alist)))
 
 (use-package intel-hex-mode
   :ensure t

@@ -355,7 +355,8 @@ If SELECT is non-nil, select the target window."
   (add-hook 'c++-mode-hook (function cscope-minor-mode))
   (add-hook 'dired-mode-hook (function cscope-minor-mode))
   (add-hook 'python-mode-hook (function cscope-minor-mode))
-  (add-hook 'web-mode-hook (function cscope-minor-mode)))
+  (add-hook 'web-mode-hook (function cscope-minor-mode))
+  (add-hook 'go-mode-hook (function cscope-minor-mode)))
 
 ;; give helm-cscope-mode some bindings so it's actually useful
 (when (require 'helm-cscope nil t)

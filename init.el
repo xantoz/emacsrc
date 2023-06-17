@@ -107,7 +107,8 @@
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
-;; unity.el setup
+(when t
+;;;;;;;;;;;;;; unity.el setup ;;;;;;;;;;;;
 ;(maybe-add-to-load-path (relative-path "submodule-elisp/unity-el/"))
 (load (relative-path "submodule-elisp/unity-el/unity.el"))
 (when i-am-windows
@@ -126,12 +127,60 @@
   (lsp-keymap-prefix "C-c l"))
 (use-package csharp-mode
   :ensure t
-  :init
+  ;; :init
   (defun my/csharp-mode-hook ()
-    ;; (setq-local lsp-auto-guess-root t)
-    ;; (lsp)
+    (c-set-style "linux")
+    (setq-local c-basic-offset 4)
+    ;; (c-toggle-hungry-state 1)
+    ;; (c-toggle-auto-newline 1)
+    (setq-local tab-width 4)
+
+    (setq-local lsp-auto-guess-root t)
+    (lsp)
     )
   (add-hook 'csharp-mode-hook #'my/csharp-mode-hook))
+;;;;;;;;;;; END unity.el setup ;;;;;;;;;;;;
+)
+
+(when nil
+;;;;;;;;;;;;;; omnisharp ;;;;;;;;;;;;
+(eval-after-load
+  'company
+  '(add-to-list 'company-backends #'company-omnisharp))
+
+(defun my-csharp-mode-setup ()
+  ;; (omnisharp-mode)
+  ;; (company-mode)
+  ;; (flycheck-mode)
+
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+
+  ;csharp-mode README.md recommends this too
+  ;(electric-pair-mode 1)       ;; Emacs 24
+  ;(electric-pair-local-mode 1) ;; Emacs 25
+
+  ;; (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  ;; (local-set-key (kbd "C-c C-c") 'recompile)
+  )
+
+(add-hook 'csharp-mode-hook #'my-csharp-mode-setup t)
+
+(defun my-omnisharp-mode-setup ()
+  (local-set-key (kbd "C-c o .") #'omnisharp-go-to-definition)
+  (local-set-key (kbd "C-c o 4 .") #'omnisharp-go-to-definition-other-window)
+  (local-set-key (kbd "C-c o g") #'omnisharp-find-usages)
+  (local-set-key (kbd "C-c o G") #'omnisharp-find-usages-with-ido)
+  (local-set-key (kbd "C-c o m") #'omnisharp-find-implementations)
+  (local-set-key (kbd "C-c o M") #'omnisharp-find-implementations-with-ido)
+  (local-set-key (kbd "C-c o i") #'omnisharp-auto-complete))
+(add-hook 'omnisharp-mode-hook #'my-omnisharp-mode-setup)
+;;;;;;;;;;;; END omnisharp ;;;;;;;;;;
+)
 
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
 (use-package nix-mode

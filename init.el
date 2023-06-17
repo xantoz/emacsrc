@@ -1,7 +1,12 @@
 (require 'cl)                           ; I like extra bloat!
 ;; only really works during load-time
 (defun relative-path (path)
-  (expand-file-name path (file-name-directory load-file-name)))
+  (let ((filename (or load-file-name "~/.config/emacs/")))
+    (expand-file-name path (file-name-directory filename))))
+
+(defun launch-command (command)
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
 
 (when (>= emacs-major-version 24)
   (load (relative-path "package-settings.el")))
@@ -59,6 +64,9 @@
 (defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
 (defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
 (defconst i-am-michiru       (string-prefix-p "michiru" (system-name)))
+(defconst i-am-michiru-windows (and i-am-michiru (eq system-type 'windows-nt)))
+(defconst i-am-michiru-linux (and i-am-michiru (eq system-type 'gnu/linux)))
+(defconst i-am-michiru-wsl (and i-am-michiru-linux (string-suffix-p "Microsoft" (string-chop-newline (shell-command-to-string "uname -r")) t)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
@@ -207,7 +215,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(when (or i-am-colgate i-am-usbee i-am-nazrin)
+(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-michiru-linux)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window
@@ -432,7 +440,8 @@ If SELECT is non-nil, select the target window."
   (add-hook 'c++-mode-hook (function cscope-minor-mode))
   (add-hook 'dired-mode-hook (function cscope-minor-mode))
   (add-hook 'python-mode-hook (function cscope-minor-mode))
-  (add-hook 'web-mode-hook (function cscope-minor-mode)))
+  (add-hook 'web-mode-hook (function cscope-minor-mode))
+  (add-hook 'go-mode-hook (function cscope-minor-mode)))
 
 ;; give helm-cscope-mode some bindings so it's actually useful
 (when (require 'helm-cscope nil t)
@@ -714,7 +723,7 @@ Graphical browsers only."
      (defun set-prolog-system (system)
        (interactive "Ssystem: ")
        (setq prolog-system system)
-       (setq prolog-program-name (case prolog-system
+       (setq prolog-program-name (cl-case prolog-system
                                    (gnu "gprolog")
                                    (swi "swipl")
                                    (sicstus (cond ((or i-am-monad i-am-udongein) "/usr/local/sicstus4.1.2/bin/sicstus")
@@ -755,7 +764,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-               ((and i-am-michiru (not (featurep 'w32))) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
                (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))
@@ -1175,7 +1184,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package groovy-mode
   :ensure t
   :defer t
-  :config (setq groovy-indent-offset 2))
+  :config (setq groovy-indent-offset 2
+                auto-mode-alist (acons "[Jj]enkinsfile" #'groovy-mode auto-mode-alist)))
 
 (use-package intel-hex-mode
   :ensure t

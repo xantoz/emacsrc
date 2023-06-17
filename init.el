@@ -4,6 +4,10 @@
   (let ((filename (or load-file-name "~/.config/emacs/")))
     (expand-file-name path (file-name-directory filename))))
 
+(defun launch-command (command)
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
+
 (when (>= emacs-major-version 24)
   (load (relative-path "package-settings.el")))
 

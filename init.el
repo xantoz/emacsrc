@@ -60,6 +60,9 @@
 (defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
 (defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
 (defconst i-am-michiru       (string-prefix-p "michiru" (system-name)))
+(defconst i-am-michiru-windows (and i-am-michiru (eq system-type 'windows-nt)))
+(defconst i-am-michiru-linux (and i-am-michiru (eq system-type 'gnu/linux)))
+(defconst i-am-michiru-wsl (and i-am-michiru-linux (string-suffix-p "Microsoft" (string-chop-newline (shell-command-to-string "uname -r")) t)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
@@ -131,7 +134,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(when (or i-am-colgate i-am-usbee i-am-nazrin)
+(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-michiru-linux)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window
@@ -680,7 +683,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-               ((and i-am-michiru (not (featurep 'w32))) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
                (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))

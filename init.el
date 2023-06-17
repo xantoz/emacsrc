@@ -1,7 +1,8 @@
 (require 'cl)                           ; I like extra bloat!
 ;; only really works during load-time
 (defun relative-path (path)
-  (expand-file-name path (file-name-directory load-file-name)))
+  (let ((filename (or load-file-name "~/.config/emacs/")))
+    (expand-file-name path (file-name-directory filename))))
 
 (when (>= emacs-major-version 24)
   (load (relative-path "package-settings.el")))

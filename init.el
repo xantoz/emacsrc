@@ -137,7 +137,7 @@
   (lsp-keymap-prefix "C-c l"))
 (use-package csharp-mode
   :ensure t
-  ;; :init
+  :init
   (defun my/csharp-mode-hook ()
     (c-set-style "linux")
     (setq-local c-basic-offset 4)

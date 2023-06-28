@@ -18,21 +18,23 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-;; wrap use-package so that it ignores :ensure
-(defun up-parameter-skip-to-keyword (list)
-  (cond ((endp list) nil)
-        ((keywordp (car list)) list)
-        (t (up-parameter-skip-to-keyword (cdr list)))))
+(unless (featurep 'w32)
+  ;; wrap use-package so that it ignores :ensure
+  (defun up-parameter-skip-to-keyword (list)
+    (cond ((endp list) nil)
+          ((keywordp (car list)) list)
+          (t (up-parameter-skip-to-keyword (cdr list)))))
 
-(defun up-parameter-remove (list key)
-  (cond ((endp list) nil)
-        ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
-        (t (cons (car list) (up-parameter-remove (cdr list) key)))))
+  (defun up-parameter-remove (list key)
+    (cond ((endp list) nil)
+          ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
+          (t (cons (car list) (up-parameter-remove (cdr list) key)))))
 
-(setf (symbol-function '%old-use-package) (symbol-function 'use-package))
-(defmacro use-package (&rest args)
-  (let ((no-ensure (up-parameter-remove args :ensure)))
-    `(%old-use-package ,@no-ensure)))
+  (setf (symbol-function '%old-use-package) (symbol-function 'use-package))
+  (defmacro use-package (&rest args)
+    (let ((no-ensure (up-parameter-remove args :ensure)))
+      `(%old-use-package ,@no-ensure)))
+  )
 
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)

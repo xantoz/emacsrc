@@ -1251,6 +1251,8 @@ TODO: Should i count-words-tex for regions somehow too?"
   ;; save bookmarks every time
   (setq bookmark-save-flag 1))
 
+(use-package mozc-im :ensure t)
+
 ;; Make emacs stop whining about setting this in .dir-locals
 (put 'cscope-initial-directory      'safe-local-variable t)
 (put 'python-indent                 'safe-local-variable t)

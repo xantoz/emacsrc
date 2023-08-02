@@ -1221,12 +1221,13 @@ TODO: Should i count-words-tex for regions somehow too?"
   :defer 1
   :config
   (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18))
-  (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-pushremote)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent))
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-pushremote)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent)
+  )
 
 (use-package swiper
   :ensure t

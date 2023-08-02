@@ -45,9 +45,16 @@
 ;(setq max-lisp-eval-depth 10000)        ; 16.7 times larger than default (600)
 (setq max-lisp-eval-depth 20000)
 
+
+;; Compatibility with older emacs versions
 (unless (fboundp 'system-name)
   (defun system-name ()
     system-name))
+(unless (fboundp 'string-chop-newline)
+  (defun string-chop-newline (string)
+    "Remove the final newline (if any) from STRING."
+    (string-remove-suffix "\n" string)))
+
 
 ;; Constants to tell which machine we are running on so we can conditionally include code and stuffs
 (defconst i-am-csc-ubuntu (and (eq system-type 'gnu/linux) (string= "csc" (second (split-string (system-name) "\\.")))))

@@ -59,6 +59,7 @@
 (defconst i-am-nanopi-alpine (string-prefix-p "nanopi-alpine" (system-name)))
 (defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
 (defconst i-am-michiru       (string-prefix-p "michiru" (system-name)))
+(defconst i-am-asdfasdf-linux (and (eq system-type 'gnu/linux) (string-prefix-p "asdfasdf" (system-name))))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
@@ -130,7 +131,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(when (or i-am-colgate i-am-usbee i-am-nazrin)
+(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window

@@ -150,7 +150,6 @@
   :custom
   (lsp-keymap-prefix "C-c l"))
 (use-package csharp-mode
-  :ensure t
   :init
   (defun my/csharp-mode-hook ()
     (c-set-style "linux")

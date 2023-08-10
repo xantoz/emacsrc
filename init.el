@@ -1,7 +1,12 @@
 (require 'cl)                           ; I like extra bloat!
 ;; only really works during load-time
 (defun relative-path (path)
-  (expand-file-name path (file-name-directory load-file-name)))
+  (let ((filename (or load-file-name "~/.config/emacs/")))
+    (expand-file-name path (file-name-directory filename))))
+
+(defun launch-command (command)
+  (interactive (list (read-shell-command "$ ")))
+  (start-process-shell-command command nil command))
 
 (when (>= emacs-major-version 24)
   (load (relative-path "package-settings.el")))
@@ -13,21 +18,23 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
-;; wrap use-package so that it ignores :ensure
-(defun up-parameter-skip-to-keyword (list)
-  (cond ((endp list) nil)
-        ((keywordp (car list)) list)
-        (t (up-parameter-skip-to-keyword (cdr list)))))
+(unless (featurep 'w32)
+  ;; wrap use-package so that it ignores :ensure
+  (defun up-parameter-skip-to-keyword (list)
+    (cond ((endp list) nil)
+          ((keywordp (car list)) list)
+          (t (up-parameter-skip-to-keyword (cdr list)))))
 
-(defun up-parameter-remove (list key)
-  (cond ((endp list) nil)
-        ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
-        (t (cons (car list) (up-parameter-remove (cdr list) key)))))
+  (defun up-parameter-remove (list key)
+    (cond ((endp list) nil)
+          ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
+          (t (cons (car list) (up-parameter-remove (cdr list) key)))))
 
-(setf (symbol-function '%old-use-package) (symbol-function 'use-package))
-(defmacro use-package (&rest args)
-  (let ((no-ensure (up-parameter-remove args :ensure)))
-    `(%old-use-package ,@no-ensure)))
+  (setf (symbol-function '%old-use-package) (symbol-function 'use-package))
+  (defmacro use-package (&rest args)
+    (let ((no-ensure (up-parameter-remove args :ensure)))
+      `(%old-use-package ,@no-ensure)))
+  )
 
 ;; (autoload 'ghc-init "ghc" nil t)
 ;; (autoload 'ghc-debug "ghc" nil t)
@@ -38,9 +45,16 @@
 ;(setq max-lisp-eval-depth 10000)        ; 16.7 times larger than default (600)
 (setq max-lisp-eval-depth 20000)
 
+
+;; Compatibility with older emacs versions
 (unless (fboundp 'system-name)
   (defun system-name ()
     system-name))
+(unless (fboundp 'string-chop-newline)
+  (defun string-chop-newline (string)
+    "Remove the final newline (if any) from STRING."
+    (string-remove-suffix "\n" string)))
+
 
 ;; Constants to tell which machine we are running on so we can conditionally include code and stuffs
 (defconst i-am-csc-ubuntu (and (eq system-type 'gnu/linux) (string= "csc" (second (split-string (system-name) "\\.")))))
@@ -60,9 +74,14 @@
 (defconst i-am-sumireko      (string-prefix-p "sumireko" (system-name)))
 (defconst i-am-michiru       (string-prefix-p "michiru" (system-name)))
 (defconst i-am-asdfasdf-linux (and (eq system-type 'gnu/linux) (string-prefix-p "asdfasdf" (system-name))))
+(defconst i-am-michiru-windows (and i-am-michiru (eq system-type 'windows-nt)))
+(defconst i-am-michiru-linux (and i-am-michiru (eq system-type 'gnu/linux)))
+(defconst i-am-michiru-wsl (and i-am-michiru-linux (string-suffix-p "Microsoft" (string-chop-newline (shell-command-to-string "uname -r")) t)))
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
+
+(defconst i-am-windows (or (eq system-type 'windows-nt) (eq system-type 'cygwin)))
 
 (defconst i-am-graphical (or (featurep 'x) (featurep 'w32)))
 
@@ -106,6 +125,81 @@
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
+(when t
+;;;;;;;;;;;;;; unity.el setup ;;;;;;;;;;;;
+;(maybe-add-to-load-path (relative-path "submodule-elisp/unity-el/"))
+(load (relative-path "submodule-elisp/unity-el/unity.el"))
+(when i-am-windows
+  (setq unity-vcvarsall "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat")
+  (setenv "FrameWorkPathOverride" "C:\\Program Files (x86)\\Reference Assemblies\\Microsoft\\Framework\\.NETFramework\\v4.7.1")
+  ;; (setenv "FrameWorkPathOverride" "C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.7.1")
+  )
+;; (add-hook 'after-init-hook #'unity-build-code-shim)
+;; (add-hook 'after-init-hook #'unity-setup)
+
+(use-package lsp-mode
+  :ensure t
+  :bind-keymap
+  ("C-c l" . lsp-command-map)
+  :custom
+  (lsp-keymap-prefix "C-c l"))
+(use-package csharp-mode
+  :ensure t
+  :init
+  (defun my/csharp-mode-hook ()
+    (c-set-style "linux")
+    (setq-local c-basic-offset 4)
+    ;; (c-toggle-hungry-state 1)
+    ;; (c-toggle-auto-newline 1)
+    (setq-local tab-width 4)
+
+    (setq-local lsp-auto-guess-root t)
+    (lsp)
+    )
+  (add-hook 'csharp-mode-hook #'my/csharp-mode-hook))
+;;;;;;;;;;; END unity.el setup ;;;;;;;;;;;;
+)
+
+(when nil
+;;;;;;;;;;;;;; omnisharp ;;;;;;;;;;;;
+(eval-after-load
+  'company
+  '(add-to-list 'company-backends #'company-omnisharp))
+
+(defun my-csharp-mode-setup ()
+  ;; (omnisharp-mode)
+  ;; (company-mode)
+  ;; (flycheck-mode)
+
+  (setq indent-tabs-mode nil)
+  (setq c-syntactic-indentation t)
+  (c-set-style "ellemtel")
+  (setq c-basic-offset 4)
+  (setq truncate-lines t)
+  (setq tab-width 4)
+
+  ;csharp-mode README.md recommends this too
+  ;(electric-pair-mode 1)       ;; Emacs 24
+  ;(electric-pair-local-mode 1) ;; Emacs 25
+
+  ;; (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
+  ;; (local-set-key (kbd "C-c C-c") 'recompile)
+  )
+
+(add-hook 'csharp-mode-hook #'my-csharp-mode-setup t)
+
+(defun my-omnisharp-mode-setup ()
+  (local-set-key (kbd "C-c o .") #'omnisharp-go-to-definition)
+  (local-set-key (kbd "C-c o 4 .") #'omnisharp-go-to-definition-other-window)
+  (local-set-key (kbd "C-c o g") #'omnisharp-find-usages)
+  (local-set-key (kbd "C-c o G") #'omnisharp-find-usages-with-ido)
+  (local-set-key (kbd "C-c o m") #'omnisharp-find-implementations)
+  (local-set-key (kbd "C-c o M") #'omnisharp-find-implementations-with-ido)
+  (local-set-key (kbd "C-c o i") #'omnisharp-auto-complete))
+(add-hook 'omnisharp-mode-hook #'my-omnisharp-mode-setup)
+;;;;;;;;;;;; END omnisharp ;;;;;;;;;;
+)
+
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
 (use-package nix-mode
   :ensure t
@@ -131,7 +225,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux)
+(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux)
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window
@@ -680,7 +774,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-               ((and i-am-michiru (not (featurep 'w32))) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
                (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))
@@ -1127,7 +1221,15 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package magit
   :ensure t
   :defer 1
-  :config (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18)))
+  :config
+  (setq magit-log-margin '(t "%Y-%m-%d %H:%M" magit-log-margin-width t 18))
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-pushremote)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent)
+  )
 
 (use-package swiper
   :ensure t
@@ -1158,6 +1260,8 @@ TODO: Should i count-words-tex for regions somehow too?"
   :config
   ;; save bookmarks every time
   (setq bookmark-save-flag 1))
+
+(use-package mozc-im :ensure t)
 
 ;; Make emacs stop whining about setting this in .dir-locals
 (put 'cscope-initial-directory      'safe-local-variable t)

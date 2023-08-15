@@ -723,32 +723,28 @@ Graphical browsers only."
 ;; popular language Perl. Some people choose to use ".pro" as a suffix
 ;; for Prolog files. In that case the next line is better than the one
 ;; above.
-(setq auto-mode-alist (append '(("\\.pro$" . prolog-mode))
-                              auto-mode-alist))
-
-;;;; Makefile.<something> should be opened in makefile mode
-(setq auto-mode-alist (acons "[Mm]akefile\\..*$" #'makefile-gmake-mode
-                             auto-mode-alist))
+(use-package prolog-mode
+  :mode ("\\.pro$" . prolog-mode)
+  :config
+  (progn
+    (defun set-prolog-system (system)
+      (interactive "Ssystem: ")
+      (setq prolog-system system)
+      (setq prolog-program-name (cl-case prolog-system
+                                  (gnu "gprolog")
+                                  (swi "swipl")
+                                  (sicstus (cond ((or i-am-monad i-am-udongein) "/usr/local/sicstus4.1.2/bin/sicstus")
+                                                 (i-am-colgate                  "/usr/local/sicstus4.2.3/bin/sicstus")
+                                                 (i-am-csc-ubuntu               "/opt/sicstus/4.2.0/bin/sicstus")
+                                                 (t                             "sicstus")))))
+      (when (eq prolog-system 'gnu)
+        (setq prolog-consult-string "[%f].")))
+    (setq prolog-indent-width 4)
+    (set-prolog-system (if (and (not i-am-csc-ubuntu) (eq system-type 'gnu/linux)) 'swi 'sicstus))))
 
 ;;;; debian postinst file should open with sh-mode
-(push '("postinst" . sh-mode) auto-mode-alist)
-
-(eval-after-load 'prolog
-  '(progn
-     (defun set-prolog-system (system)
-       (interactive "Ssystem: ")
-       (setq prolog-system system)
-       (setq prolog-program-name (cl-case prolog-system
-                                   (gnu "gprolog")
-                                   (swi "swipl")
-                                   (sicstus (cond ((or i-am-monad i-am-udongein) "/usr/local/sicstus4.1.2/bin/sicstus")
-                                                  (i-am-colgate                  "/usr/local/sicstus4.2.3/bin/sicstus")
-                                                  (i-am-csc-ubuntu               "/opt/sicstus/4.2.0/bin/sicstus")
-                                                  (t                             "sicstus")))))
-       (when (eq prolog-system 'gnu)
-         (setq prolog-consult-string "[%f].")))
-     (setq prolog-indent-width 4)
-     (set-prolog-system (if (and (not i-am-csc-ubuntu) (eq system-type 'gnu/linux)) 'swi 'sicstus))))
+(use-package sh-script
+  :mode ("postinst" . sh-mode))
 
 ;;;; HASKELL
 ;(add-hook 'haskell-mode-hook 'turn-on-haskell-ghci)
@@ -1203,8 +1199,8 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package groovy-mode
   :ensure t
   :defer t
-  :config (setq groovy-indent-offset 2
-                auto-mode-alist (acons "[Jj]enkinsfile" #'groovy-mode auto-mode-alist)))
+  :mode ("[Jj]enkinsfile" . groovy-mode)
+  :config (setq groovy-indent-offset 2))
 
 (use-package intel-hex-mode
   :ensure t

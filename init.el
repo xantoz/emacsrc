@@ -1195,7 +1195,10 @@ TODO: Should i count-words-tex for regions somehow too?"
 (use-package fill-column-indicator :ensure t :defer t)
 (use-package dts-mode :ensure t :defer t)
 (use-package dockerfile-mode :ensure t :defer t)
-(use-package shader-mode :ensure t :defer t)
+(use-package shader-mode
+  :ensure t
+  :defer t
+  :mode ("\\.\\(cginc\\|hlsl\\)$" . shader-mode))
 
 (use-package groovy-mode
   :ensure t

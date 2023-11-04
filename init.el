@@ -776,6 +776,7 @@ Graphical browsers only."
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               (i-am-michiru-wsl "-*-courier-medium-r-*-*-14-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
                (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))

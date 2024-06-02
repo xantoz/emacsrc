@@ -18,6 +18,10 @@
 (require 'use-package)
 (setq use-package-verbose t)
 
+;; linum-mode is replaced by display-line-numbers-mode That is such a
+;; hassle to type though, so let's just make up an alias here
+(defalias #'linum-mode #'display-line-numbers-mode)
+
 (unless (featurep 'w32)
   ;; wrap use-package so that it ignores :ensure
   (defun up-parameter-skip-to-keyword (list)

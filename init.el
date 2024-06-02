@@ -186,6 +186,7 @@
   (setq c-basic-offset 4)
   (setq truncate-lines t)
   (setq tab-width 4)
+  (whitespace-mode)
 
   ;csharp-mode README.md recommends this too
   ;(electric-pair-mode 1)       ;; Emacs 24

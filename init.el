@@ -162,6 +162,7 @@
     ;; (c-toggle-hungry-state 1)
     ;; (c-toggle-auto-newline 1)
     (setq-local tab-width 4)
+    (setq-local indent-tabs-mode nil)
 
     (setq-local lsp-auto-guess-root t)
     (lsp)
@@ -177,17 +178,18 @@
   '(add-to-list 'company-backends #'company-omnisharp))
 
 (defun my-csharp-mode-setup ()
-  ;; (omnisharp-mode)
-  ;; (company-mode)
-  ;; (flycheck-mode)
+  (omnisharp-mode)
+  (company-mode)
+  (flycheck-mode)
 
   (setq indent-tabs-mode nil)
   (setq c-syntactic-indentation t)
-  (c-set-style "ellemtel")
+  ;; (c-set-style "ellemtel")
+  (c-set-style "linux")
   (setq c-basic-offset 4)
   (setq truncate-lines t)
   (setq tab-width 4)
-  (whitespace-mode)
+  ;; (whitespace-mode)
 
   ;csharp-mode README.md recommends this too
   ;(electric-pair-mode 1)       ;; Emacs 24

@@ -136,7 +136,18 @@
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
-(when t
+;; Just give me some basic imenu for C#, I don't need all those fancy LSP mode or omnisharp or whatever (rather I can't get them to work well at all within WSL...)
+;; https://stackoverflow.com/questions/2240320/in-emacs-how-can-i-use-imenu-more-sensibly-with-c
+(setq csharp-imenu-functions
+      '(("Variables" "^\\s-*[a-zA-Z0-9._ ]* \\([a-zA-Z0-9_]*\\)\\( = \\sw*\\|\\s-*\\);$" 1)
+        ("Functions" "^\\s-*[^/]* \\([a-zA-Z0-9_]+\\)(.*)\\(\\s-*.*\n\\|\\ *\\)\\s-*{" 1)
+        ("Classes" "^\\s-*\\(.*\\)class +\\([a-zA-Z0-9_]+\\)" 2)
+        ("Namespaces" "^namespace +\\([a-z0-9_]*\\)" 1)))
+(add-hook 'csharp-mode-hook
+          (lambda()
+            (setq imenu-generic-expression csharp-imenu-functions)))
+
+(when nil
 ;;;;;;;;;;;;;; unity.el setup ;;;;;;;;;;;;
 ;(maybe-add-to-load-path (relative-path "submodule-elisp/unity-el/"))
 (load (relative-path "submodule-elisp/unity-el/unity.el"))

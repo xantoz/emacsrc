@@ -812,7 +812,10 @@ Graphical browsers only."
                (i-am-asdfasdf-wsl "-bitstream-*-medium-r-*-*-18-*-*-*-*-*-*-*")
                (i-am-cirno "-1ASC-Liberation Mono-normal-normal-normal-*-20-*-*-*-m-0-iso10646-1")
                (i-am-nazrin "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-11-*-*-*-m-0-iso10646-1")
-               (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*"))))
+               (i-am-sumireko "-gnu-unifont-medium-r-normal-sans-16-*-*-*-*-*-*-*")
+               ;; (i-am-asdfasdf-linux "-PfEd-DejaVu Sans Mono-normal-normal-normal-*-16-*-*-*-m-0-iso10646-1")
+               (i-am-asdfasdf-linux "-CTDB-Fira Mono-regular-normal-normal-*-15-*-*-*-m-0-iso10646-1")
+               )))
     (when font
       (add-to-initial-and-default-frame-alist (cons 'font font)))))
 ;;;; END font settings

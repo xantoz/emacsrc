@@ -1,7 +1,7 @@
 (require 'cl)                           ; I like extra bloat!
 ;; only really works during load-time
 (defun relative-path (path)
-  (let ((filename (or load-file-name "~/.config/emacs/")))
+  (let ((filename (or load-file-name (symbol-file 'relative-path) "~/.config/emacs/")))
     (expand-file-name path (file-name-directory filename))))
 
 (defun launch-command (command)

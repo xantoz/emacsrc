@@ -1240,6 +1240,19 @@ TODO: Should i count-words-tex for regions somehow too?"
   ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
   ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream)
   ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent)
+
+  ;; WORKAROUND https://github.com/magit/magit/issues/2395
+  (define-derived-mode magit-staging-mode magit-status-mode "Magit staging"
+    "Mode for showing staged and unstaged changes."
+    :group 'magit-status)
+  (defun magit-staging-refresh-buffer ()
+    (magit-insert-section (status)
+      (magit-insert-untracked-files)
+      (magit-insert-unstaged-changes)
+      (magit-insert-staged-changes)))
+  (defun magit-staging ()
+    (interactive)
+    (magit-mode-setup #'magit-staging-mode))
   )
 
 (use-package swiper

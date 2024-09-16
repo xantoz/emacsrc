@@ -1,4 +1,4 @@
-(require 'cl)                           ; I like extra bloat!
+(require 'cl-lib)                           ; I like extra bloat!
 ;; only really works during load-time
 (defun relative-path (path)
   (let ((filename (or load-file-name (symbol-file 'relative-path) "~/.config/emacs/")))
@@ -26,12 +26,12 @@
 (unless (featurep 'w32)
   ;; wrap use-package so that it ignores :ensure
   (defun up-parameter-skip-to-keyword (list)
-    (cond ((endp list) nil)
+    (cond ((cl-endp list) nil)
           ((keywordp (car list)) list)
           (t (up-parameter-skip-to-keyword (cdr list)))))
 
   (defun up-parameter-remove (list key)
-    (cond ((endp list) nil)
+    (cond ((cl-endp list) nil)
           ((eq (car list) key) (up-parameter-skip-to-keyword (cdr list)))
           (t (cons (car list) (up-parameter-remove (cdr list) key)))))
 
@@ -65,7 +65,7 @@
 (defconst i-am-wsl1
   (and (eq system-type 'gnu/linux)
        (string-suffix-p "Microsoft" (string-chop-newline (shell-command-to-string "uname -r")) t)))
-(defconst i-am-csc-ubuntu       (and (eq system-type 'gnu/linux) (string= "csc" (second (split-string (system-name) "\\.")))))
+(defconst i-am-csc-ubuntu       (and (eq system-type 'gnu/linux) (string= "csc" (cl-second (split-string (system-name) "\\.")))))
 (defconst i-am-monad            (string-prefix-p "monad" (system-name)))
 (defconst i-am-lain             (string-prefix-p "lain" (system-name)))
 (defconst i-am-sakuya           (string-prefix-p "sakuya" (system-name)))
@@ -562,8 +562,8 @@ If SELECT is non-nil, select the target window."
   "Finds browser to use, from an internal list. Earlier takes precedence.
 Graphical browsers only."
   (let ((browsers (list "webmacs" "librewolf" "firefox" "conkeror" "chromium" "midori" "surf")))
-    (reduce (lambda (a b) (or a b))     ;or ain't a function, can't use it without thunk
-            (mapcar #'executable-find browsers))))
+    (cl-reduce (lambda (a b) (or a b))     ;or ain't a function, can't use it without thunk
+               (mapcar #'executable-find browsers))))
 
 (cond ((and i-am-graphical
             (find-browser))
@@ -866,10 +866,10 @@ Graphical browsers only."
 
 ;; Using CL style loop
 (defun list-until (predicate list)
-  (loop for x on list
-      collect (first x)
-      until (or (eq (second x) nil)
-                (funcall predicate (second x)))))
+  (cl-loop for x on list
+	   collect (cl-first x)
+	   until (or (eq (cl-second x) nil)
+                     (funcall predicate (cl-second x)))))
 
 ;; calculate arithmetic mean of list
 (defun avlis (list)
@@ -931,9 +931,9 @@ See `sort-regexp-fields'."
 
 (defun decode-hex-string (hex-string)
   (apply #'concat
-     (loop for i from 0 to (- (/ (length hex-string) 2) 1)
-           for hex-byte = (substring hex-string (* 2 i) (* 2 (+ i 1)))
-           collect (format "%c" (string-to-number hex-byte 16)))))
+     (cl-loop for i from 0 to (- (/ (length hex-string) 2) 1)
+              for hex-byte = (substring hex-string (* 2 i) (* 2 (+ i 1)))
+              collect (format "%c" (string-to-number hex-byte 16)))))
 ;;;; END
 
 ;;;; this is really crap over from the minijava project
@@ -1164,14 +1164,14 @@ TODO: Should i count-words-tex for regions somehow too?"
   :ensure t
   :config (progn
             (defun csv-tally (file field)
-              (reduce (lambda (a b)
+              (cl-reduce (lambda (a b)
                         (+ a (string-to-number (nth field b))))
                       (pcsv-parse-file file)
                       :initial-value 0))
 
             (defun csv-average (file field)
               (let ((csv (pcsv-parse-file file)))
-                (/ (reduce (lambda (a b) (+ a (string-to-number (nth field b))))
+                (/ (cl-reduce (lambda (a b) (+ a (string-to-number (nth field b))))
                            csv
                            :initial-value 0)
                    (float (length csv)))))))

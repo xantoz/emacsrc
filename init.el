@@ -224,6 +224,16 @@
 ;;;;;;;;;;;; END omnisharp ;;;;;;;;;;
 )
 
+;; i don't want tabs in my C#
+(add-hook 'csharp-mode-hook
+          (lambda ()
+            (c-set-style "linux")
+            (setq-local c-basic-offset 4)
+            ;; (c-toggle-hungry-state 1)
+            ;; (c-toggle-auto-newline 1)
+            (setq-local tab-width 4)
+            (setq-local indent-tabs-mode nil)))
+
 (use-package json :ensure t :defer t) ; seems to be used by nix-mode in part, but it's not properly pulled in...
 (use-package nix-mode
   :ensure t

@@ -94,7 +94,7 @@
 
 (defconst i-am-windows (or (eq system-type 'windows-nt) (eq system-type 'cygwin)))
 
-(defconst i-am-graphical (or (featurep 'x) (featurep 'w32)))
+(defconst i-am-graphical (or (featurep 'x) (featurep 'w32) (featurep 'pgtk)))
 
 ;; (setq load-path (remove-if (lambda (x) (string-match "auctex" x)) load-path))
 

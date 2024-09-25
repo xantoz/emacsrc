@@ -101,6 +101,14 @@
 (if (featurep 'tex-site) (unload-feature 'tex-site t))
 
 ;;;; DIRED
+(setq dired-listing-switches "-alh")    ; human sizes in dired
+(setq list-directory-verbose-switches "-lh")
+(setq find-name-arg "-iname")           ; I like to search case-insensitively by default
+
+(when i-am-windows
+  ;; (setq find-name-program "find -iname")
+  (setq find-program "busybox find"))
+
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds
 (defun my-dired-copy-filename-as-kill (&optional arg)
@@ -1315,9 +1323,6 @@ TODO: Should i count-words-tex for regions somehow too?"
 (eval-after-load 'rng-loc
   '(add-to-list 'rng-schema-locating-files "~/.emacs.d/schema/schemas.xml"))
 
-(setq dired-listing-switches "-alh")    ; human sizes in dired
-(setq list-directory-verbose-switches "-lh")
-(setq find-name-arg "-iname")           ; I like to search case-insensitively by default
 (setq hanoi-use-faces t)
 
 ;; Have org mode display inline preview images scaled appropriately
@@ -1329,6 +1334,8 @@ TODO: Should i count-words-tex for regions somehow too?"
   (setq semantic-imenu-index-directory t))
 
 (setq large-file-warning-threshold (* 10000000 5))
+
+(defalias 'eshell/v 'eshell-exec-visual)
 
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

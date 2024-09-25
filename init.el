@@ -109,6 +109,12 @@
   ;; (setq find-name-program "find -iname")
   (setq find-program "busybox find"))
 
+(use-package fd-dired
+  :ensure t
+  :config
+  (when i-am-windows
+    (setq fd-dired-ls-option '("| xargs -0 ls -ld | uniq" . "-ld"))))
+
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds
 (defun my-dired-copy-filename-as-kill (&optional arg)

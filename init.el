@@ -1351,7 +1351,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :defer t
   :config
   (setq whitespace-line-column nil      ; Honor fill column
-        whitespace-style '(face tabs trailing empty lines-tail))
+        whitespace-style '(face tabs trailing empty))
   :init
   (dolist (i '(c-mode-common-hook
                makefile-mode-hook

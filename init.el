@@ -88,6 +88,9 @@
 (defconst i-am-michiru-windows  (and i-am-michiru (eq system-type 'windows-nt)))
 (defconst i-am-michiru-linux    (and i-am-michiru (eq system-type 'gnu/linux)))
 (defconst i-am-michiru-wsl      (and i-am-michiru-linux i-am-wsl1))
+(defconst i-am-ABB              (string= "SE-L-PF4Y38FD" (system-name)))
+(defconst i-am-ABB-linux        (and i-am-ABB (eq system-type 'gnu/linux)))
+;; TODO: Defines for ABB WSL1 and WSL2 ?
 
 (defconst i-am-headless-server (or i-am-suiseiseki i-am-souseiseki i-am-sakuya i-am-patchouli i-am-kombu i-am-nanopi-alpine))
 (defconst i-have-battery (or i-am-colgate i-am-nazrin i-am-cirno i-am-usbee i-am-sumireko))
@@ -289,7 +292,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux))
+(defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux i-am-ABB-linux))
 
 (when i-have-vterm
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))

@@ -1230,6 +1230,7 @@ TODO: Should i count-words-tex for regions somehow too?"
                     sh-basic-offset 8))
           t)
 
+(use-package powershell :ensure t :defer t)
 (use-package lua-mode :ensure t :defer t)
 (use-package rust-mode :ensure t :defer t)
 (use-package qml-mode :ensure t :defer t)

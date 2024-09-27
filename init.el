@@ -288,7 +288,9 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(when (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux)
+(defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux))
+
+(when i-have-vterm
   (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
     :commands vterm vterm-other-window

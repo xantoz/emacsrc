@@ -111,6 +111,7 @@
 
 (use-package fd-dired
   :ensure t
+  :defer t
   :config
   (progn
     (when i-am-windows

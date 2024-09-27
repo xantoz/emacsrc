@@ -112,8 +112,14 @@
 (use-package fd-dired
   :ensure t
   :config
-  (when i-am-windows
-    (setq fd-dired-ls-option '("| xargs -0 ls -ld | uniq" . "-ld"))))
+  (progn
+    (when i-am-windows
+      ;; Fix for busybox ls
+      (setq fd-dired-ls-option '("| xargs -0 ls -ld | uniq" . "-ld")))
+    ;; Ignore .gitignore files and etc.
+    ;;   Uses custom--standard-value to get default.
+    ;;   For the record, custom--standard-value is (eval (car (get <SYMBOL> 'standard-value)))
+    (setq fd-dired-pre-fd-args (concat (custom--standard-value 'fd-dired-pre-fd-args) " -I"))))
 
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds

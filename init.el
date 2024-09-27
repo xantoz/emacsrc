@@ -156,6 +156,14 @@
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
+(use-package lsp-mode
+  :ensure t
+  :bind-keymap
+  ("C-c l" . lsp-command-map)
+  :custom
+  (lsp-keymap-prefix "C-c l")
+  (lsp-enable-snippet nil))
+
 ;; Just give me some basic imenu for C#, I don't need all those fancy LSP mode or omnisharp or whatever (rather I can't get them to work well at all within WSL...)
 ;; https://stackoverflow.com/questions/2240320/in-emacs-how-can-i-use-imenu-more-sensibly-with-c
 (setq csharp-imenu-functions

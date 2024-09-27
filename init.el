@@ -1373,7 +1373,28 @@ TODO: Should i count-words-tex for regions somehow too?"
 
 (setq large-file-warning-threshold (* 10000000 5))
 
-(defalias 'eshell/v 'eshell-exec-visual)
+
+(use-package eshell
+  :config
+  (progn
+    (when i-have-vterm
+      (use-package eshell-vterm
+        :load-path "site-lisp/eshell-vterm"
+        :demand t
+        :after eshell
+        :config
+        (eshell-vterm-mode)))
+
+    (defalias 'eshell/v 'eshell-exec-visual)
+
+    (use-package eshell-syntax-highlighting
+      :ensure t
+      :defer t
+      :after eshell
+      ;; :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-lisp-function-face :slant italic))))
+      ;; :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-shell-command-face :slant italic))))
+      :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-directory-face :slant italic))))
+      :config (eshell-syntax-highlighting-global-mode 1))))
 
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

@@ -726,15 +726,16 @@ Graphical browsers only."
                                                             (t               "/tmp/image-dired_temp_rotate"))
              image-dired-thumbnail-storage            'standard)
        ;; Make dired use image-dired-dired-next-line and image-dired-dired-previous-line for extra niceness
-       (add-hook 'dired-mode-hook
-                 (lambda ()
-                   (local-set-key "n"    'image-dired-dired-next-line)
-                   (local-set-key "p"    'image-dired-dired-previous-line)
-                   (local-set-key " "    'image-dired-dired-next-line)
-                   (local-set-key "\C-n" 'image-dired-dired-next-line)
-                   (local-set-key "\C-p" 'image-dired-dired-previous-line)
-                   (local-set-key [down] 'image-dired-dired-next-line)
-                   (local-set-key [up]   'image-dired-dired-previous-line))))))
+       ;; (add-hook 'dired-mode-hook
+       ;;           (lambda ()
+       ;;             (local-set-key "n"    'image-dired-dired-next-line)
+       ;;             (local-set-key "p"    'image-dired-dired-previous-line)
+       ;;             (local-set-key " "    'image-dired-dired-next-line)
+       ;;             (local-set-key "\C-n" 'image-dired-dired-next-line)
+       ;;             (local-set-key "\C-p" 'image-dired-dired-previous-line)
+       ;;             (local-set-key [down] 'image-dired-dired-next-line)
+       ;;             (local-set-key [up]   'image-dired-dired-previous-line)))
+       )))
 
 ;;;; battery
 (when (and (> emacs-major-version 21) (require 'battery nil t))

@@ -105,6 +105,7 @@
 (setq list-directory-verbose-switches "-lh")
 (setq find-name-arg "-iname")           ; I like to search case-insensitively by default
 
+;; Attempt to make find-name-dired etc. work better on windows with busybox find (it doesn't realy)
 (when i-am-windows
   ;; (setq find-name-program "find -iname")
   (setq find-program "busybox find"))

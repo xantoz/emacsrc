@@ -1403,6 +1403,7 @@ TODO: Should i count-words-tex for regions somehow too?"
       (use-package eshell-vterm
         :load-path "site-lisp/eshell-vterm"
         :demand t
+        :ensure t
         :after eshell
         :config
         (eshell-vterm-mode)))

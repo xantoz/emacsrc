@@ -507,9 +507,10 @@ If SELECT is non-nil, select the target window."
           #'(lambda ()
               (linum-mode)))
 
-; Make Emacs use "newline-and-indent" when you hit the Enter key so
-; that you don't need to keep using TAB to align yourself when coding.
-(global-set-key "\C-m" 'newline-and-indent)
+(when (< emacs-major-version 24)
+  ;; Make Emacs use "newline-and-indent" when you hit the Enter key so
+  ;; that you don't need to keep using TAB to align yourself when coding.
+  (global-set-key "\C-m" 'newline-and-indent))
 
 (use-package xcscope
   :defer t

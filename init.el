@@ -890,6 +890,23 @@ Graphical browsers only."
 
 ;;;; BEGIN my hacky functions here
 
+;; Loop for all elisp functions
+(defun mapfunctions (fn)
+  (mapatoms (lambda (sym)
+              (when (symbol-function sym) (funcall fn sym)))))
+
+(defun list-functions ()
+  (let ((result nil))
+    (mapfunctions (lambda (sym) (push sym result)))
+    result))
+
+(defun list-eshell-functions ()
+  (let ((result nil))
+    (mapfunctions (lambda (sym)
+                    (when (string-prefix-p "eshell/" (symbol-name sym))
+                        (push sym result))))
+    result))
+
 ;; inferior recursive version (but much easier to understand)
 (defun list-until-recursive (predicate list)
   (cond ((eq list nil)                  nil)

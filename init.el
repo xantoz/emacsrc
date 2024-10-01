@@ -1417,7 +1417,7 @@ TODO: Should i count-words-tex for regions somehow too?"
       ;; :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-lisp-function-face :slant italic))))
       ;; :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-shell-command-face :slant italic))))
       :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-directory-face :slant italic))))
-      :config (eshell-syntax-highlighting-global-mode 1))))
+      :custom (eshell-syntax-highlighting-global-mode t))))
 
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

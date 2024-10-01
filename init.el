@@ -121,7 +121,7 @@
     ;; Ignore .gitignore files and etc.
     ;;   Uses custom--standard-value to get default.
     ;;   For the record, custom--standard-value is (eval (car (get <SYMBOL> 'standard-value)))
-    (setq fd-dired-pre-fd-args (concat (custom--standard-value 'fd-dired-pre-fd-args) " -I"))))
+    (setq fd-dired-pre-fd-args (concat (custom--standard-value 'fd-dired-pre-fd-args) " -IH"))))
 
 ;; Have some nice extra dired features like dired-do-find-marked-files (on F)
 ;; also keybinds

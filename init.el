@@ -1303,7 +1303,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :if (not i-am-headless-server)
   :ensure t
   :defer t
-  :init (when (fboundp 'pdf-loader-install) (pdf-loader-install t t)))
+  :config (when (fboundp 'pdf-loader-install) (pdf-loader-install t t)))
 
 (use-package webpaste :ensure t :defer t)
 (use-package 0x0 :ensure t :defer t)

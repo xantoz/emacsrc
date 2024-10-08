@@ -161,6 +161,10 @@
  (relative-path "submodule-elisp/bitbake-el/")
  "~/.elisp/")
 
+;; A nice little mode for displaying ansi colors in log files etc.
+;; Gotten off of stack-overflow, but then I made it into a proper module kind of
+(require 'ansi-color-mode)
+
 (use-package lsp-mode
   :ensure t
   :bind-keymap

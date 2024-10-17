@@ -989,6 +989,35 @@ See `sort-regexp-fields'."
   (interactive)
   (start-process "xterm" "nil" "xterm" "-ls"))
 
+(when i-am-windows
+  (defun wt ()
+    "Launches a windows terminal in hopefully the current directory"
+    (interactive)
+    ;; For some reason starting wt.exe directly fails, but calling it through cmd works
+    ;; Also we have to give the executable it should run or we seem to start in the home folder
+    ;; with-environment-variables needed because TERM gets set to dumb
+    (with-environment-variables (("TERM" "xterm"))
+      (start-process "cmd.exe" "nil" "cmd.exe" "/c" "wt.exe" "busybox" "ash")))
+
+  (defun wt2 ()
+    "Launches a windows terminal in hopefully the current directory"
+    (interactive)
+    ;; Wierd hack
+    (start-process "wt.exe" "nil" "wt.exe" "wt.exe")
+    ;; (start-process "powershell.exe" "nil" "powershell.exe" "-Command" "cd C:/; wt.exe")
+    ;; (start-process "powershell.exe" "nil" "powershell.exe" "-Command" "wt.exe")
+    ;; (start-process "cmd.exe" "nil" "cmd.exe" "/c" "wt.exe")
+    )
+
+  (defun wt-powershell ()
+    "Launches a windows terminal in hopefully the current directory"
+    (interactive)
+    ;; For some reason starting wt.exe directly fails, but calling it through cmd works
+    ;; Also we have to give the executable it should run or we seem to start in the home folder
+    (with-environment-variables (("TERM" "xterm"))
+      (start-process "cmd.exe" "nil" "cmd.exe" "/c" "wt.exe" "powershell")))
+  )
+
 (defun decode-hex-string (hex-string)
   (apply #'concat
      (cl-loop for i from 0 to (- (/ (length hex-string) 2) 1)

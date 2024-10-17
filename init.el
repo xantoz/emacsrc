@@ -609,6 +609,8 @@ Graphical browsers only."
             (find-browser))
        (setq browse-url-browser-function 'browse-url-generic
              browse-url-generic-program (find-browser)))
+      ((require 'eww nil t)
+       (setq browse-url-browser-function 'eww-browse-url))
       ((require 'w3m nil t)
        (setq browse-url-browser-function 'w3m-browse-url)
        (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)))

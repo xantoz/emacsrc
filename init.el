@@ -732,12 +732,22 @@ Graphical browsers only."
 ;;;; Find function
 (find-function-setup-keys)
 
-;;;; iswitchb-mode  (I don't care that it is deprecated. I prefer this over ido-mode!)
-(iswitchb-mode 1)
-(setq iswitchb-default-method
-      (if i-am-headless-server
-          'always-frame
-          'samewindow))
+;;;; OK. Finally time to switch to something else. icomplete-mode with fido-mode or fido-vertical-mode seems OK-ish.
+;; Default icomplete mode is a bit too many keystrokes.
+;; TODO: Consider disabling icomplete mode for some things like finding files however.
+;;
+;; Gated by emacs 28 since fido-vertical-mode was introduced then.
+;; iswitchb-mode is still around, even in emacs 29 and 30, so we can
+;; use it in emacsen before 28 even if it was deprecated in emacs 24
+(cond ((>= emacs-major-version 28)
+       (icomplete-mode 1)
+       (fido-vertical-mode 1))
+      (t
+       (iswitchb-mode 1)
+       (setq iswitchb-default-method
+             (if i-am-headless-server
+                 'always-frame
+                 'samewindow))))
 
 ;;;;; abbrevations and completion
 (setq read-file-name-completion-ignore-case t

@@ -717,6 +717,7 @@ Graphical browsers only."
           'always-frame
           'samewindow))
 
+;; ivy switch buffer on a different keybind for some reason that I forgot
 (global-set-key (kbd "C-x M-b") #'ivy-switch-buffer)
 (global-set-key (kbd "C-x C-M-b") #'ivy-switch-buffer)
 

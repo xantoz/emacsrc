@@ -1037,6 +1037,7 @@ See `sort-regexp-fields'."
 ;;;; end crap
 
 
+;; Make unique buffer names by using part of the path instead of just numbers when opening more than one file with the same name
 (require 'uniquify)
 (setq
   uniquify-buffer-name-style 'post-forward

@@ -165,6 +165,25 @@
 ;; Gotten off of stack-overflow, but then I made it into a proper module kind of
 (require 'ansi-color-mode)
 
+(with-eval-after-load 'eglot
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((c-mode c++-mode)
+  ;;                . ("clangd"
+  ;;                   ;; "-Wno-c++98-compat"
+  ;;                   "-j=8"
+  ;;                   "--log=error"
+  ;;                   ;; "--malloc-trim"
+  ;;                   "--background-index"
+  ;;                   "--clang-tidy"
+  ;;                   ;; "--cross-file-rename"
+  ;;                   "--completion-style=detailed"
+  ;;                   "--pch-storage=memory"
+  ;;                   "--header-insertion=never"
+  ;;                   "--header-insertion-decorators=0"
+  ;;                   )))
+  (when (eq window-system 'w32)
+    (setq eglot-extend-to-xref nil)))
+
 (use-package lsp-mode
   :ensure t
   :bind-keymap

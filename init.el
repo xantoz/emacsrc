@@ -741,7 +741,7 @@ Graphical browsers only."
 ;; use it in emacsen before 28 even if it was deprecated in emacs 24
 (cond ((>= emacs-major-version 28)
        (icomplete-mode 1)
-       (fido-vertical-mode 1))
+       (fido-mode 1))
       (t
        (iswitchb-mode 1)
        (setq iswitchb-default-method

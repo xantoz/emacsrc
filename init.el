@@ -717,6 +717,14 @@ Graphical browsers only."
           'always-frame
           'samewindow))
 
+;;;;; abbrevations and completion
+(setq read-file-name-completion-ignore-case t
+      read-buffer-completion-ignore-case t
+      completion-styles '(basic initials partial-completion substring)
+      completion-category-defaults nil ; ehh
+      completion-show-help nil
+      tab-always-indent 'complete)
+
 ;; ivy switch buffer on a different keybind for some reason that I forgot
 (global-set-key (kbd "C-x M-b") #'ivy-switch-buffer)
 (global-set-key (kbd "C-x C-M-b") #'ivy-switch-buffer)

@@ -318,16 +318,11 @@
 (defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux i-am-ABB-linux))
 
 (when i-have-vterm
-  (maybe-add-to-load-path (relative-path "emacs-libvterm/"))
   (use-package vterm
+    :ensure t
     :commands vterm vterm-other-window
-    :config (progn
-              (set-face-foreground 'vterm-color-blue "#5c5cff")
-              ;; seems like cua-mode is interfering with vterms remaping of yank and yank-pop
-              (define-key vterm-mode-map (kbd "C-y") #'vterm-yank)
-              (define-key vterm-mode-map (kbd "M-y") #'vterm-yank-pop))))
-
-
+    :bind (:map vterm-mode-map ("C-y" . vterm-yank) ("M-y" . vterm-yank-pop))
+    :config (set-face-foreground 'vterm-color-blue "#5c5cff")))
 
 ;; ;; load jflex-mode now (it becomes happier that way) if it is in load path
 ;; (require 'jflex-mode nil t)

@@ -526,13 +526,16 @@ If SELECT is non-nil, select the target window."
               (linum-mode)))
 
 ;; No indentations for namespaces in C++
-(defconst my-cc-style
+(defconst my-c++-style
   '("cc-mode"
     (c-offsets-alist . ((innamespace . [0])))))
-(c-add-style "my-cc-mode" my-cc-style)
+(c-add-style "my-c++-mode" my-c++-style)
+(c-add-style "my-c++-mode:ellemtel" (cons "ellemtel" (cdr my-c++-style)))
+(c-add-style "abb:c++-style" (append '("ellemtel") '((c-basic-offset . 2)) (cdr my-c++-style)))
+(c-add-style "abb:csharp-style" (append '("ellemtel") '((c-basic-offset . 2)) (cdr my-c++-style))) ;TODO: Maybe tweak based upon the default csharp style instead?
 (add-hook 'c++-mode-hook
           #'(lambda ()
-              (c-set-style "my-cc-mode")))
+              (c-set-style "my-c++-mode")))
 
 
 (add-hook 'python-mode-hook

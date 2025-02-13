@@ -525,6 +525,16 @@ If SELECT is non-nil, select the target window."
                              'tempo-forward-mark)
               (linum-mode)))
 
+;; No indentations for namespaces in C++
+(defconst my-cc-style
+  '("cc-mode"
+    (c-offsets-alist . ((innamespace . [0])))))
+(c-add-style "my-cc-mode" my-cc-style)
+(add-hook 'c++-mode-hook
+          #'(lambda ()
+              (c-set-style "my-cc-mode")))
+
+
 (add-hook 'python-mode-hook
           #'(lambda ()
               (linum-mode)))

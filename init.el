@@ -1092,7 +1092,9 @@ See `sort-regexp-fields'."
   (indent-for-tab-command)
   (insert "printf(\"" string " %zd\\n\", " string ");\n"))
 
-
+;; global-text-scale-adjust exists now
+;; (although it affects all frames? although maybe that's more like what I originally wanted anyway?)
+(when nil
 ;; Do stuff to the frame font
 (defun frame-font-grow (n)
   (interactive "P")
@@ -1118,6 +1120,7 @@ See `sort-regexp-fields'."
 (global-set-key (kbd "C-x M--") 'frame-font-shrink)
 (global-set-key (kbd "C-x M-+") 'frame-font-grow)
 (global-set-key (kbd "C-x M-=") 'frame-font-grow)
+)
 
 ;;;; "stolen" hacky functions here
 (defun bf-pretty-print-xml-region (begin end)

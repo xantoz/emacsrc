@@ -166,6 +166,9 @@
 ;; Gotten off of stack-overflow, but then I made it into a proper module kind of
 (require 'ansi-color-mode)
 
+(use-package breadcrumb :if (> emacs-major-version 29) :ensure t :defer t)
+
+;; TODO: Use use-package here?
 (with-eval-after-load 'eglot
   ;; (add-to-list 'eglot-server-programs
   ;;              '((c-mode c++-mode)
@@ -183,8 +186,13 @@
   ;;                   "--header-insertion-decorators=0"
   ;;                   )))
   (when (eq window-system 'w32)
-    (setq eglot-extend-to-xref nil)))
+    (setq eglot-extend-to-xref nil))
+  (when (require 'breadcrumb nil t)
+    (defun eglot-enable-breadcrumb ()
+      (breadcrumb-local-mode (if (eglot-managed-p) 1 -1)))
+    (add-hook 'eglot-managed-mode-hook #'eglot-enable-breadcrumb)))
 
+;; TODO: Maybe I no longer really need lsp-mode now that eglot is included in emacs
 (use-package lsp-mode
   :ensure t
   :bind-keymap

@@ -89,7 +89,8 @@
 (defconst i-am-michiru-linux    (and i-am-michiru (eq system-type 'gnu/linux)))
 (defconst i-am-michiru-wsl      (and i-am-michiru-linux i-am-wsl1))
 (defconst i-am-ABB              (or (string= (system-name) "SE-L-PF4Y38FD" )
-                                    (string= (system-name) "akindestam-ubuntu2404-VirtualBox")))
+                                    (string= (system-name) "akindestam-ubuntu2404-VirtualBox")
+                                    (string= (system-name) "debian-vmware")))
 (defconst i-am-ABB-linux        (and i-am-ABB (eq system-type 'gnu/linux)))
 ;; TODO: Defines for ABB WSL1 and WSL2 ?
 

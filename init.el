@@ -326,7 +326,7 @@
           (add-hook 'mmm-shell-script-mode-submode-hook (lambda () (whitespace-mode 0)))
           (add-hook 'mmm-sh-mode-submode-hook (lambda () (whitespace-mode 0)))))
 
-(defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux i-am-ABB-linux))
+(defconst i-have-vterm (or i-am-colgate i-am-usbee i-am-nazrin i-am-asdfasdf-linux i-am-michiru-linux i-am-ABB-linux i-am-zeke i-am-leon))
 
 (when i-have-vterm
   (use-package vterm

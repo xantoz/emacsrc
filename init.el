@@ -88,6 +88,8 @@
 (defconst i-am-michiru-windows  (and i-am-michiru (eq system-type 'windows-nt)))
 (defconst i-am-michiru-linux    (and i-am-michiru (eq system-type 'gnu/linux)))
 (defconst i-am-michiru-wsl      (and i-am-michiru-linux i-am-wsl1))
+(defconst i-am-zeke             (string-prefix-p "zeke" (system-name)))
+(defconst i-am-leon             (string-prefix-p "leon" (system-name)))
 (defconst i-am-ABB              (or (string= (system-name) "SE-L-PF4Y38FD" )
                                     (string= (system-name) "akindestam-ubuntu2404-VirtualBox")))
 (defconst i-am-ABB-linux        (and i-am-ABB (eq system-type 'gnu/linux)))

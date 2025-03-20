@@ -203,16 +203,25 @@
   (lsp-keymap-prefix "C-c l")
   (lsp-enable-snippet nil))
 
-;; Just give me some basic imenu for C#, I don't need all those fancy LSP mode or omnisharp or whatever (rather I can't get them to work well at all within WSL...)
-;; https://stackoverflow.com/questions/2240320/in-emacs-how-can-i-use-imenu-more-sensibly-with-c
-(setq csharp-imenu-functions
-      '(("Variables" "^\\s-*[a-zA-Z0-9._ ]* \\([a-zA-Z0-9_]*\\)\\( = \\sw*\\|\\s-*\\);$" 1)
-        ("Functions" "^\\s-*[^/]* \\([a-zA-Z0-9_]+\\)(.*)\\(\\s-*.*\n\\|\\ *\\)\\s-*{" 1)
-        ("Classes" "^\\s-*\\(.*\\)class +\\([a-zA-Z0-9_]+\\)" 2)
-        ("Namespaces" "^namespace +\\([a-z0-9_]*\\)" 1)))
-(add-hook 'csharp-mode-hook
-          (lambda()
-            (setq imenu-generic-expression csharp-imenu-functions)))
+;; TODO: Don't :ensure this for emacs 29 or newer. csharp-mode is built in for these emacsen. 
+;;       Or maybe emacs is smart enough to figure this out on its own, and the issue I'm having right now is that omnisharp-mode or something else is pulling in the elpa version
+;;       Actually it should be fine if the package pre-exists
+(use-package csharp-mode
+  :ensure t
+  :defer t
+  :config
+  (progn
+    ;; Just give me some basic imenu for C#, I don't need all those fancy LSP mode or omnisharp or whatever (rather I can't get them to work well at all within WSL...)
+    ;; https://stackoverflow.com/questions/2240320/in-emacs-how-can-i-use-imenu-more-sensibly-with-c
+    (setq csharp-imenu-functions
+          '(("Variables" "^\\s-*[a-zA-Z0-9._ ]* \\([a-zA-Z0-9_]*\\)\\( = \\sw*\\|\\s-*\\);$" 1)
+            ("Functions" "^\\s-*[^/]* \\([a-zA-Z0-9_]+\\)(.*)\\(\\s-*.*\n\\|\\ *\\)\\s-*{" 1)
+            ("Classes" "^\\s-*\\(.*\\)class +\\([a-zA-Z0-9_]+\\)" 2)
+            ("Namespaces" "^namespace +\\([a-z0-9_]*\\)" 1)))
+    (add-hook 'csharp-mode-hook
+              (lambda()
+                (setq imenu-generic-expression csharp-imenu-functions)))))
+(use-package csproj-mode :ensure t :defer t)
 
 (when nil
 ;;;;;;;;;;;;;; unity.el setup ;;;;;;;;;;;;

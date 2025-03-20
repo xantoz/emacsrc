@@ -170,8 +170,9 @@
 
 (use-package breadcrumb :if (> emacs-major-version 29) :ensure t :defer t)
 
-;; TODO: Use use-package here?
-(with-eval-after-load 'eglot
+(use-package eglot
+  :config
+  (progn
   ;; (add-to-list 'eglot-server-programs
   ;;              '((c-mode c++-mode)
   ;;                . ("clangd"
@@ -193,6 +194,10 @@
     (defun eglot-enable-breadcrumb ()
       (breadcrumb-local-mode (if (eglot-managed-p) 1 -1)))
     (add-hook 'eglot-managed-mode-hook #'eglot-enable-breadcrumb)))
+  ;; ;; Like LSP
+  ;; :custom-face (eglot-highlight-symbol-face ((t (:inherit highlight :underline t))))
+  ;; A bit like LSP but inverse-video instead
+  :custom-face (eglot-highlight-symbol-face ((t (:underline (:color foreground-color :style line :position nil) :inverse-video t)))))
 
 ;; TODO: Maybe I no longer really need lsp-mode now that eglot is included in emacs
 (use-package lsp-mode

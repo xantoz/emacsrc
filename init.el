@@ -1379,7 +1379,8 @@ TODO: Should i count-words-tex for regions somehow too?"
   :defer t
   ;; Use locally installed plantuml of course
   ;; Why is 'server the default? *yells at cloud computing*
-  :custom (plantuml-default-exec-mode 'executable))
+  :custom (plantuml-default-exec-mode 'executable)
+  :mode ("\\.puml$" . plantuml-mode))
 
 (use-package powershell :ensure t :defer t)
 (use-package lua-mode :ensure t :defer t)

@@ -912,7 +912,7 @@ Graphical browsers only."
                (i-am-colgate "-misc-fixed-medium-r-semicondensed--13-120-75-75-c-60-iso10646-1")
                ;; (i-am-colgate "-adobe-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
                (i-am-udongein "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
-               ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-*-courier-medium-r-*-*-12-*-*-*-*-*-*-*")
+               ((and i-am-michiru-linux (not i-am-michiru-wsl)) "-adobe-courier-medium-r-normal--18-180-75-75-m-110-iso8859-1") ;Kinda large font for TV use
                (i-am-michiru-wsl "-*-courier-medium-r-*-*-14-*-*-*-*-*-*-*")
                ;; (i-am-asdfasdf-wsl "-*-courier-medium-r-*-*-16-*-*-*-*-*-*-*")
                ;; (i-am-asdfasdf-wsl "-urw-Nimbus Mono L-regular-normal-normal-*-20-*-*-*-m-0-iso10646-1")

@@ -169,7 +169,7 @@
 ;; Gotten off of stack-overflow, but then I made it into a proper module kind of
 (require 'ansi-color-mode)
 
-(use-package breadcrumb :if (> emacs-major-version 29) :ensure t :defer t)
+(use-package breadcrumb :if (>= emacs-major-version 29) :ensure t :defer t)
 
 (use-package eglot
   :config

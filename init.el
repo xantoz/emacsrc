@@ -1383,7 +1383,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :custom (plantuml-default-exec-mode 'executable)
   :mode ("\\.puml$" . plantuml-mode))
 
-(use-package powershell :ensure t :defer t)
+(use-package powershell :ensure t :defer nil) ;Have to load this eagerly because of some interactions with an (eval-after-load 'eglot  ...) in powershell-mode and eglot itself
 (use-package lua-mode :ensure t :defer t)
 (use-package rust-mode :ensure t :defer t)
 (use-package zig-mode :ensure t :defer t)

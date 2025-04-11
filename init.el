@@ -172,6 +172,7 @@
 (use-package breadcrumb :if (>= emacs-major-version 29) :ensure t :defer t)
 
 (use-package eglot
+  :after powershell                     ;Workaround error message: ⛔ Error (use-package): eglot/:catch: Symbol’s function definition is void: powershell--register-langserver
   :config
   (progn
   ;; (add-to-list 'eglot-server-programs

@@ -768,6 +768,16 @@ Graphical browsers only."
       completion-show-help nil
       tab-always-indent 'complete)
 
+;; Change how icomplete and icomplete-vertical-mode works
+;;   When non-nil, show completions when first prompting for input.
+;;   This means to show completions even when the current minibuffer contents
+;;   is the same as was the initial input after minibuffer activation.
+;;   This also means that if you traverse the list of completions with
+;;   commands like C-. and just hit RET without typing any
+;;   characters, the match under point will be chosen instead of the
+;;   default.
+(setq icomplete-show-matches-on-no-input t)
+
 ;; ivy switch buffer on a different keybind for some reason that I forgot
 (global-set-key (kbd "C-x M-b") #'ivy-switch-buffer)
 (global-set-key (kbd "C-x C-M-b") #'ivy-switch-buffer)

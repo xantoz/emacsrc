@@ -184,7 +184,8 @@
   ;; ;; Like LSP
   ;; :custom-face (eglot-highlight-symbol-face ((t (:inherit highlight :underline t))))
   ;; A bit like LSP but inverse-video instead
-  :custom-face (eglot-highlight-symbol-face ((t (:underline (:color foreground-color :style line :position nil) :inverse-video t)))))
+  :custom-face (eglot-highlight-symbol-face ((t (:underline (:color foreground-color :style line :position nil) :inverse-video t))))
+  :custom (eglot-ignored-server-capabilities '(:documentOnTypeFormattingProvider)))
 
 ;; TODO: Maybe I no longer really need lsp-mode now that eglot is included in emacs
 (use-package lsp-mode

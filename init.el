@@ -175,27 +175,12 @@
   :after powershell                     ;Workaround error message: ⛔ Error (use-package): eglot/:catch: Symbol’s function definition is void: powershell--register-langserver
   :config
   (progn
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '((c-mode c++-mode)
-  ;;                . ("clangd"
-  ;;                   ;; "-Wno-c++98-compat"
-  ;;                   "-j=8"
-  ;;                   "--log=error"
-  ;;                   ;; "--malloc-trim"
-  ;;                   "--background-index"
-  ;;                   "--clang-tidy"
-  ;;                   ;; "--cross-file-rename"
-  ;;                   "--completion-style=detailed"
-  ;;                   "--pch-storage=memory"
-  ;;                   "--header-insertion=never"
-  ;;                   "--header-insertion-decorators=0"
-  ;;                   )))
-  (when (eq window-system 'w32)
-    (setq eglot-extend-to-xref nil))
-  (when (require 'breadcrumb nil t)
-    (defun eglot-enable-breadcrumb ()
-      (breadcrumb-local-mode (if (eglot-managed-p) 1 -1)))
-    (add-hook 'eglot-managed-mode-hook #'eglot-enable-breadcrumb)))
+    (when (eq window-system 'w32)
+      (setq eglot-extend-to-xref nil))
+    (when (require 'breadcrumb nil t)
+      (defun eglot-enable-breadcrumb ()
+        (breadcrumb-local-mode (if (eglot-managed-p) 1 -1)))
+      (add-hook 'eglot-managed-mode-hook #'eglot-enable-breadcrumb)))
   ;; ;; Like LSP
   ;; :custom-face (eglot-highlight-symbol-face ((t (:inherit highlight :underline t))))
   ;; A bit like LSP but inverse-video instead

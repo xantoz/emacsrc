@@ -764,6 +764,9 @@ Graphical browsers only."
           'always-frame
           'samewindow))
 
+;;; Let's have icomplete-vertical-mode everywhere else. I'm starting to get used to hitting C-j instead of RET.
+(icomplete-vertical-mode 1)
+
 ;;;;; abbrevations and completion
 (setq read-file-name-completion-ignore-case t
       read-buffer-completion-ignore-case t

@@ -409,6 +409,8 @@
          (global-set-key (kbd "C-M-.") 'imenu-anywhere))
         (t (global-set-key (kbd "C-.") 'imenu-anywhere))))
 
+
+;;;; PYTHON IMENU HAX
 (defun fix-python-imenu ()
   "Hack to manually set imenu-create-index-function to python-imenu-create-index"
   (interactive)
@@ -420,6 +422,8 @@
 (add-hook 'python-mode-hook
           (lambda()
             (setq imenu-create-index-function 'python-imenu-create-index)))
+;;;; END PYTHON IMENU HAX
+
 
 ;; Enable CUA selection mode without the C-z/C-x/C-c/C-v bindings.
 ;; Use case: rectangular regions using C-RET

@@ -1380,6 +1380,14 @@ TODO: Should i count-words-tex for regions somehow too?"
   :mode ("\\.puml$" . plantuml-mode))
 
 (use-package powershell :ensure t :defer nil) ;Have to load this eagerly because of some interactions with an (eval-after-load 'eglot  ...) in powershell-mode and eglot itself
+
+(use-package kdl-mode
+  :ensure t
+  :defer t
+  :init (add-hook 'kdl-mode-hook
+                  #'(lambda ()
+                    (setq tab-width 4)))) ; kdl-mode seems to use tab-width for its base indent. 8 is a bit wide when not using hard tabs, so let's change to 4
+
 (use-package lua-mode :ensure t :defer t)
 (use-package rust-mode :ensure t :defer t)
 (use-package zig-mode :ensure t :defer t)

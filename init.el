@@ -1544,5 +1544,14 @@ TODO: Should i count-words-tex for regions somehow too?"
       :custom-face (eshell-syntax-highlighting-builtin-command-face ((t (:inherit eshell-syntax-highlighting-directory-face :slant italic))))
       :custom (eshell-syntax-highlighting-global-mode t))))
 
+
+;; I think this will disable the annoying asking whether I want to
+;; store my passwords when I use tramp for su or sudo or ssh...
+;; Because I do not like storing passwords at all...
+;;
+;; This came from ~/.emacs-custom on michiru, but let's have it in git
+(setq auth-source-save-behavior nil)
+
+
 (setq custom-file "~/.emacs-custom")
 (load custom-file t t)

@@ -1386,7 +1386,7 @@ TODO: Should i count-words-tex for regions somehow too?"
   :custom (plantuml-default-exec-mode 'executable)
   :mode ("\\.puml$" . plantuml-mode))
 
-(use-package powershell :ensure t :defer nil) ;Have to load this eagerly because of some interactions with an (eval-after-load 'eglot  ...) in powershell-mode and eglot itself
+(use-package powershell :ensure t) ;Have to load this eagerly because of some interactions with an (eval-after-load 'eglot  ...) in powershell-mode and eglot itself. Before I had ':ensure t :defer nil' to be explicit about it, but it seems like that had the opposite effect (at least on emacs 29). Leaving out :defer seems to do it?
 
 (use-package kdl-mode
   :ensure t

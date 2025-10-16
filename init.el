@@ -1,5 +1,8 @@
 (require 'cl-lib)                           ; I like extra bloat!
-;; only really works during load-time
+
+;; Used to only work during load-time due to using load-file-name to
+;; find the path to init.el, but we fallback on using symbol-file on
+;; the relative-path function itself so now it works, yay.
 (defun relative-path (path)
   (let ((filename (or load-file-name (symbol-file 'relative-path) "~/.config/emacs/")))
     (expand-file-name path (file-name-directory filename))))
